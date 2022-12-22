@@ -6,8 +6,30 @@
 #include <cassert>
 
 
+Node::Node(Player *player): player(player) {
+    team = player->getTeam();
+    id = player->getPlayerId();
+    rank = player->getSpirit();
+    parent = nullptr;
+    sizeOfTree = 1;
+    smallestNodeSpirit = permutation_t::neutral();
+}
 
-void playerHashMap::add(Player* player) {
+Player* Node::getPlayer() const {
+    return player;
+}
+
+int Node::getPlayerId() const {
+    return id;
+}
+
+Team* Node::getTeam() const {
+    return team;
+}
+
+
+void playerHashMap::add(Node* node) {
+    Player* player = node->getPlayer();
     int playerId = player->getPlayerId();
     if (find(player) != -1){
         return;  //TODO: maybe return failed?
@@ -15,7 +37,7 @@ void playerHashMap::add(Player* player) {
     int index = hash(playerId);
     if(array[index].isEmpty)  //object isnt already in hash map
     {
-        array[index].element = player;
+        array[index].node = node;
         array[index].isEmpty = false;
         ++numOfPlayers;
         if (arrayLength == numOfPlayers){
@@ -30,7 +52,7 @@ int playerHashMap::hash(int playerId) const {
     assert (arrayLength != numOfPlayers);
     int hashVal = hashFunction1(playerId, arrayLength);
     int stepSize = hashFunction2(playerId, arrayLength);
-    while (array[hashVal].isEmpty != true && array[hashVal].element->getPlayerId() != playerId){
+    while (array[hashVal].isEmpty != true && array[hashVal].node->getPlayerId() != playerId){
         hashVal = hashVal + stepSize;
         hashVal %= arrayLength;
     }
@@ -53,7 +75,7 @@ void playerHashMap::expand() {
 void playerHashMap::remap(playerStruct *oldArray, playerStruct *newArray) {
     int oldSize = arrayLength/2;
     for (int i= 0; i < oldSize; ++i){
-        int currentPlayerId = oldArray[i].element->getPlayerId();
+        int currentPlayerId = oldArray[i].node->getPlayerId();
         newArray[hash(currentPlayerId)] = oldArray[i];
     }
 }
@@ -76,4 +98,9 @@ int playerHashMap::find(Player *player) const {
         return -1;
     }
     return index;
+}
+
+playerStruct &playerHashMap::operator[](int index) const {
+    assert(index < arrayLength);
+    return array[index];
 }

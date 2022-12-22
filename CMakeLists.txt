@@ -8,4 +8,4 @@ add_executable(
         wet2util.h
         worldcup23a2.h
         worldcup23a2.cpp
-        AVL_tree.h playerHashMap.cpp playerHashMap.h Player.cpp Player.h Team.cpp Team.h Tests/UnionFindTests.cpp)
+        AVL_tree.h playerHashMap.cpp playerHashMap.h Player.cpp Player.h Team.cpp Team.h Tests/UnionFindTests.cpp playerUnionFind.cpp playerUnionFind.h)

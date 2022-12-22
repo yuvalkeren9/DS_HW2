@@ -10,11 +10,29 @@
 
 using namespace std;
 
-struct playerStruct{
-    bool isEmpty;
-    Player* element;
-    playerStruct() : isEmpty(true), element(nullptr){};
+struct Node{            //circle
+    int id;
+    Player* player;
+    Team* team;
+    permutation_t rank;
+    Node* parent;
+    int sizeOfTree;
+    permutation_t smallestNodeSpirit;
+
+    Node(Player* player);
+    Player* getPlayer() const;
+    int getPlayerId() const;
+    Team* getTeam() const;
 };
+
+
+struct playerStruct{          //square
+    bool isEmpty;
+    Node* node;
+    playerStruct() : isEmpty(true), node(nullptr){};
+};
+
+
 
 class playerHashMap {
 public:
@@ -24,8 +42,12 @@ public:
     playerHashMap() : numOfPlayers(0), arrayLength(initialSize), array(nullptr){
         array = new playerStruct[initialSize];
     }
-    void add(Player* player);
+    ~playerHashMap() {
+        delete[] array;
+    }
+    void add(Node* node);
     int find(Player* player) const;
+    playerStruct& operator[](int index) const;
 
 
     //functions for tests
@@ -36,7 +58,7 @@ public:
                 std::cout << "Empty!" << std::endl;
                 continue;
             }
-            std::cout << array[i].element->getPlayerId() << std::endl;
+            std::cout << array[i].node->getPlayerId() << std::endl;
         }
     }
 

@@ -6,8 +6,17 @@
 #define DS2_TEAM_H
 
 
-class Team {
+class Node;
 
+class Team {
+private:
+    int teamId;
+    Node* teamRepresentative;
+
+public:
+    Team(int teamId) : teamId(teamId), teamRepresentative(nullptr){};
+    Node* getTeamRepresentative() const;
+    void setTeamRepresentative(Node* team);
 };
 
 

@@ -17,12 +17,18 @@ class Player {
     int cards;
     bool goalKeeper;
     int numberOfGamesTeamPlayedBeforeInit;
+    Team* team;
 
 
 public:
     Player(int playerId, int teamId, const permutation_t &spirit, int gamesPlayed, int ability, int cards, bool goalKeeper) : playerId(playerId),
-    teamId(teamId), spirit(spirit), gamesPlayed(gamesPlayed), ability(ability), cards(cards),numberOfGamesTeamPlayedBeforeInit(0), goalKeeper(goalKeeper){};
+    teamId(teamId), spirit(spirit), gamesPlayed(gamesPlayed), ability(ability), cards(cards),numberOfGamesTeamPlayedBeforeInit(0), goalKeeper(goalKeeper), team(nullptr){};
     int getPlayerId() const;
+    permutation_t getSpirit() const;  //?
+    Team* getTeam() const;
+
+    void setTeam(Team* teamToSet);
+
 };
 
 
