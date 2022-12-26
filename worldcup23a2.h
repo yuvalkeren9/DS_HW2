@@ -21,11 +21,14 @@
 #include "AVL_tree.h"
 #include "playerUnionFind.h"
 #include "playerHashMap.h"
+#include "Linked_List.h"
 
 class world_cup_t {
 private:
     AVL_Tree<Team> teamsRankTree;
     playerUnionFind unionFind;
+    Linked_List<Team> deletedTeamsList;
+
 
 
 

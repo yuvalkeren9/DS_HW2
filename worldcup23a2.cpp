@@ -16,28 +16,38 @@ StatusType world_cup_t::add_team(int teamId)
 	if (teamId <= 0){
 		return StatusType::INVALID_INPUT;
 	}
-
-
-
-	//TODO: check tree if team already exists
-
-
-
-	teamsRankTree.insert(new Team(teamId));
-
-
-
-
-    //TODO: probably more stuff
-
-
+    if(searchTeamTree(teamId) != nullptr){
+        return StatusType::FAILURE;
+    }
+    try {
+        teamsRankTree.insert(new Team(teamId));
+    } catch(bad_alloc &e){
+        return StatusType::ALLOCATION_ERROR;
+    }
 	return StatusType::SUCCESS;
 }
 
 StatusType world_cup_t::remove_team(int teamId)
 {
-	// TODO: Your code goes here
-	return StatusType::FAILURE;
+	//input check
+    if(teamId <= 0){
+        return StatusType::INVALID_INPUT;
+    }
+    Team* team = searchTeamTree(teamId);
+    if (team == nullptr){
+        return  StatusType::FAILURE;
+    }
+
+    teamsRankTree.Delete(team);
+    team->setIsActive(false);
+
+    try {
+        deletedTeamsList.insert(team);
+    } catch (bad_alloc& e){
+        return StatusType::ALLOCATION_ERROR;
+    }
+
+    return StatusType::SUCCESS;
 }
 
 StatusType world_cup_t::add_player(int playerId, int teamId,
@@ -66,14 +76,26 @@ StatusType world_cup_t::add_player(int playerId, int teamId,
 
 output_t<int> world_cup_t::play_match(int teamId1, int teamId2)
 {
-	// TODO: Your code goes here
+    //TODO: this function. Made fake impllnation for testing
+    Team* team1 = searchTeamTree(teamId1);
+    Team* team2 = searchTeamTree(teamId2);
+
+    team1->incNumOfGamesPlayed(1);
+    team2->incNumOfGamesPlayed(1);
 	return StatusType::SUCCESS;
 }
 
 output_t<int> world_cup_t::num_played_games_for_player(int playerId)
 {
-	// TODO: Your code goes here
-	return 22;
+    //input check
+    if (playerId <=0){
+        return StatusType::INVALID_INPUT;
+    }
+    Player* player = unionFind.findPlayer(playerId);
+    if(player == nullptr){
+        return StatusType::FAILURE;
+    }
+    return unionFind.getPlayerNumOfGamesPlayed(player);
 }
 
 StatusType world_cup_t::add_player_cards(int playerId, int cards)

@@ -44,10 +44,18 @@ bool Team::operator<(const Team &other) const {
     return teamId < other.teamId;
 }
 
-long long int Team::getNumOfGamesPlayed() const {
+int Team::getNumOfGamesPlayed() const {
     return numOfGamesPlayed;
 }
 
-void Team::setNumOfGamesPlayed(long long int toSet) {
-    numOfGamesPlayed = toSet;
+void Team::incNumOfGamesPlayed(int toSet) {
+    numOfGamesPlayed += toSet;
+}
+
+bool Team::getIsActive() const {
+    return isActive;
+}
+
+void Team::setIsActive(bool condition) {
+    isActive = condition;
 }

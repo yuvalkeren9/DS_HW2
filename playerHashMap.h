@@ -19,7 +19,7 @@ struct Node{            //circle
     int sizeOfTree;
     permutation_t smallestNodeSpirit;
     bool wasRepresenative;
-    long long int gamesPlayedRank;
+    int gamesPlayedRank;
 
     Node(Player* player);
     Player* getPlayer() const;

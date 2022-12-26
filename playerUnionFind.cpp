@@ -14,6 +14,8 @@ Node* playerUnionFind::insertPlayer(Player *player) {
         node->wasRepresenative = true;
     }
     else{
+
+        //calculating permutation
         Node* teamRepresenative = team->getTeamRepresentative();
         node->parent = teamRepresenative;
         teamRepresenative->sizeOfTree += 1;
@@ -21,6 +23,9 @@ Node* playerUnionFind::insertPlayer(Player *player) {
         permutation_t rankOfBoughtBeforeUpdate = node->rank;
         node->rank = smallestOfTheRepresenative * node->rank;
         teamRepresenative->smallestNodeSpirit = smallestOfTheRepresenative * rankOfBoughtBeforeUpdate;
+
+        //calculating gamesPlayedRank
+        node->gamesPlayedRank = 0 - team->getNumOfGamesPlayed();
     }
     playerArray.add(node);
     return node;
@@ -87,7 +92,7 @@ void playerUnionFind::playerUnion(Team* team1, Team* team2) {
         team1Root->rank = team1Root->rank * team2Root->rank.inv();
         team2Root->smallestNodeSpirit = team2Root->rank * (oldSmallerRank * team1Root->smallestNodeSpirit);
     }
-    team2Root.gamesPlayedRank = team2->getNumOfGamesPlayed() - team1->getNumOfGamesPlayed();
+    team2Root->gamesPlayedRank = team2->getNumOfGamesPlayed() - team1->getNumOfGamesPlayed();
 
 }
 
@@ -108,18 +113,20 @@ permutation_t playerUnionFind::getPlayerSpiral(Player *player) {
 }
 
 
-long long int playerUnionFind::getPlayerNumOfGamesPlayed(Player *player) {
+int playerUnionFind::getPlayerNumOfGamesPlayed(Player *player) {
     int index = playerArray.find(player);
     //TODO: what to do when -1 returns?
     Node* node = playerArray[index].node;
     //TODO: maybe do shortcut thing?
-    long long int gamesPlayed = 0;
-    while(node != nullptr){
+    int gamesPlayed = 0;
+    while(node->parent != nullptr){
         gamesPlayed += node->gamesPlayedRank  ;
         node = node->parent;
     }
     assert(node->wasRepresenative == true);
+    gamesPlayed += node->gamesPlayedRank;
     gamesPlayed += node->team->getNumOfGamesPlayed();
+    Team* team = node->team;
     return gamesPlayed;
 }
 
