@@ -47,6 +47,7 @@ public:
     }
     void add(Node* node);
     int find(Player* player) const;
+    int findUsingId(int playerId) const;
     playerStruct& operator[](int index) const;
 
 

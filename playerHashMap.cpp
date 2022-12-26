@@ -100,7 +100,17 @@ int playerHashMap::find(Player *player) const {
     return index;
 }
 
+int playerHashMap::findUsingId(int playerId) const {
+    int index = hash(playerId);
+    if (array[index].isEmpty) {
+        return -1;
+    }
+    return index;
+}
+
 playerStruct &playerHashMap::operator[](int index) const {
     assert(index < arrayLength);
     return array[index];
 }
+
+

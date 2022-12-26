@@ -19,6 +19,7 @@ public :
     Node* findTeamRootNode(Player* player);
     void playerUnion(Team* team1, Team* team2);
     permutation_t getPlayerSpiral(Player* player);
+    Player* findPlayer(int playerId) const;
 
     playerUnionFind();
 

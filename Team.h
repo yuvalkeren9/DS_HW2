@@ -12,11 +12,20 @@ class Team {
 private:
     int teamId;
     Node* teamRepresentative;
+    long long int numbOfPlayersInTeam;
 
 public:
-    Team(int teamId) : teamId(teamId), teamRepresentative(nullptr){};
+    Team(int teamId) : teamId(teamId), teamRepresentative(nullptr), numbOfPlayersInTeam(0){};
     Node* getTeamRepresentative() const;
     void setTeamRepresentative(Node* team);
+    int getNumOfPlayersInTeam() const;
+
+
+    void increaseNumberOfPlayers(int numOfPlayersAdded);
+
+
+    bool operator==(const Team& other) const;
+    bool operator>(const Team& other) const;
 };
 
 

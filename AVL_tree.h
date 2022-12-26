@@ -49,7 +49,10 @@ private:
     void putPTRDataInArrayInorder_AUX(AVL_Tree::Node *node, T **output, int *counter) const;
     void fillEmptyTreeInorder_AUX(AVL_Tree::Node *node, T **output, int &counter) const;
 
-public:
+    T* select_AUX(Node* node, int k) const;
+
+
+        public:
     AVL_Tree(): was_tree_rotated(false), rotated_node(nullptr), main_root(nullptr) {};
     ~AVL_Tree(){  destroy_AUX(main_root);  }
     AVL_Tree& operator=(const AVL_Tree<T>& other);
@@ -69,6 +72,8 @@ public:
 
     static typename AVL_Tree<T>::Node * delete_spare_nodes(  Node* current ,int spare_nodes);
     static typename AVL_Tree<T>::Node * delete_spare_nodes_Aux(  Node* current ,int* spare_nodes);
+
+    T* select(int k) const;
 
 
     //Functions for finding neighbors
@@ -95,14 +100,16 @@ private:
     T* data;
     Node* left;
     Node* right;
-    int height;
+    long long int height;
+    long long int rank;
     friend class AVL_Tree<T>;
-    Node(): data(nullptr), left(nullptr), right(nullptr), height(0) {};
+    Node(): data(nullptr), left(nullptr), right(nullptr), height(0), rank(1) {};
 
 
 public:
     static Node* newNode(T* data);
     static int get_height(Node* node);
+    static int get_rank(Node* node);
 };
 
 /**
@@ -136,6 +143,15 @@ int AVL_Tree<T>::Node::get_height(AVL_Tree<T>::Node *node) {
 }
 
 
+template<class T>
+int AVL_Tree<T>::Node::get_rank(AVL_Tree<T>::Node *node) {
+    if (node == nullptr) {
+        return 0;
+    }
+    return node->rank;
+}
+
+
 
 /** AVL tree implication */
 
@@ -164,6 +180,7 @@ typename AVL_Tree<T>::Node *AVL_Tree<T>::insert_AUX(AVL_Tree::Node* current_root
 
         }
         current_root->height = 1 + max(Node::get_height(current_root->left), Node::get_height(current_root->right));
+        current_root->rank += 1;
         balance(current_root);
         if (was_tree_rotated){
             current_root = rotated_node;
@@ -178,6 +195,7 @@ typename AVL_Tree<T>::Node *AVL_Tree<T>::insert_AUX(AVL_Tree::Node* current_root
             return current_root;   //balance was not broken
         }
         current_root->height = 1 + max(Node::get_height(current_root->left), Node::get_height(current_root->right));
+        current_root->rank += 1;
         balance(current_root);
         if (was_tree_rotated){
             current_root = rotated_node;
@@ -256,9 +274,19 @@ void AVL_Tree<T>::LL_rotation(AVL_Tree::Node *node) {
         isCurrentNodeTheMainRoot = true;
     }
 
+    //preparing to roll
     Node* B = node;
     Node* AR = B->left->right;
     Node* A = B->left;
+
+    //preparing to rank
+    long long int BR_rank = Node::get_rank(B->right);
+    long long int AR_rank = Node::get_rank(AR);
+    long long int B_rank = Node::get_rank(B);
+
+
+
+
 
     //rotating
     B->left = AR;
@@ -266,6 +294,11 @@ void AVL_Tree<T>::LL_rotation(AVL_Tree::Node *node) {
 
     B->height = 1 + max(Node::get_height(B->left), Node::get_height(B->right));
     A->height =  1 + max(Node::get_height(A->left), Node::get_height(A->right));
+
+
+    //updating rank
+    B->rank = 1 + BR_rank + AR_rank;
+    A->rank = B_rank;
 
     was_tree_rotated = true;
     rotated_node = A;
@@ -287,12 +320,21 @@ void AVL_Tree<T>::RR_rotation(AVL_Tree::Node *node) {
     Node* A = B->right;
     Node* AL = A->left;
 
+    //preparing to rank
+    long long int BL_rank = Node::get_rank(B->left);
+    long long int AL_rank = Node::get_rank(AL);
+    long long int B_rank = Node::get_rank(B);
+
     //rotating
     B->right = AL;
     A->left = B;
 
     B->height = 1 + max(Node::get_height(B->left), Node::get_height(B->right));
     A->height =  1 + max(Node::get_height(A->left), Node::get_height(A->right));
+
+    //updating rank
+    B->rank = 1 + AL_rank + BL_rank;
+    A->rank = B_rank;
 
     was_tree_rotated = true;
     rotated_node = A;
@@ -317,6 +359,13 @@ void AVL_Tree<T>::LR_rotation(AVL_Tree::Node *node) {
     Node* BL = B->left;
     Node* BR = B->right;
 
+    //preparing to rank
+    long long int AL_rank = Node::get_rank(A->left);
+    long long int BL_rank = Node::get_rank(BL);
+    long long int BR_rank = Node::get_rank(BR);
+    long long int CR_rank = Node::get_rank(C->right);
+
+
     //rotating
     C->left = BR;
     A->right = BL;
@@ -326,6 +375,12 @@ void AVL_Tree<T>::LR_rotation(AVL_Tree::Node *node) {
     A->height= 1 + max(Node::get_height(A->left), Node::get_height(A->right));
     C->height = 1 + max(Node::get_height(C->left), Node::get_height(C->right));
     B->height =  1 + max(Node::get_height(B->left), Node::get_height(B->right));
+
+
+    //ranking
+    C->rank = BR_rank + CR_rank + 1;
+    A->rank = AL_rank + BL_rank + 1;
+    B->rank = A->rank + C->rank + 1;
 
     was_tree_rotated = true;
     rotated_node = B;
@@ -350,6 +405,13 @@ void AVL_Tree<T>::RL_rotation(AVL_Tree::Node *node) {
     Node* BL = B->left;
     Node* BR = B->right;
 
+    //preparing to rank
+    long long int BL_rank = Node::get_rank(BL);
+    long long int BR_rank = Node::get_rank(BR);
+    long long int CL_rank = Node::get_rank(C->left);
+    long long int AR_rank = Node::get_rank(A->right);
+
+
     //rotating
      C->right = BL;
      A->left = BR;
@@ -359,6 +421,10 @@ void AVL_Tree<T>::RL_rotation(AVL_Tree::Node *node) {
     A->height= 1 + max(Node::get_height(A->left), Node::get_height(A->right));
     C->height = 1 + max(Node::get_height(C->left), Node::get_height(C->right));
     B->height =  1 + max(Node::get_height(B->left), Node::get_height(B->right));
+
+    A->rank = AR_rank + BR_rank +1;
+    C->rank = BL_rank + CL_rank + 1;
+    B->rank = A->rank + C->rank + 1;
 
     was_tree_rotated = true;
     rotated_node = B;
@@ -826,6 +892,32 @@ void AVL_Tree<T>::fixLeavesHeight(Node* root){
     fixLeavesHeight(root->left);
     fixLeavesHeight(root->right);
 }
+
+
+template<class T>
+T* AVL_Tree<T>::select(int k) const{
+    Node* node = main_root;
+    return select_AUX(node, k);
+}
+
+template<class T>
+T* AVL_Tree<T>::select_AUX(Node* node, int k) const{
+    int rank = Node::get_rank(node->left);
+    if (rank == k-1){
+        return node->data;
+    }
+    else if (rank > k-1 ){
+        return select_AUX(node->left, k);
+    }
+    else{
+        return select_AUX(node->right, k - rank - 1);
+    }
+
+}
+
+
+
+
 
 
 

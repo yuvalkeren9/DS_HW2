@@ -43,6 +43,8 @@ int main(){
     Player player1(5,1, permut1, 1, 1, 1, true);
     Player player2(2,1, permut2, 1, 1, 1, true);
     Player player3(3,1, permut3, 1, 1, 1, true);
+
+
 //    Player player4(4,1, swagger, 1, 1, 1, true);
 //    Player player5(14,1, swagger, 1, 1, 1, true);
 //    Player player6(6,1, swagger, 1, 1, 1, true);

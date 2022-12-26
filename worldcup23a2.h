@@ -16,12 +16,23 @@
 #define WORLDCUP23A2_H_
 
 #include "wet2util.h"
+#include "Team.h"
+#include "Player.h"
+#include "AVL_tree.h"
+#include "playerUnionFind.h"
+#include "playerHashMap.h"
 
 class world_cup_t {
 private:
-	//
-	// Here you may add anything you want
-	//
+    AVL_Tree<Team> teamsRankTree;
+    playerUnionFind unionFind;
+
+
+
+
+
+    Team* searchTeamTree(int teamId) const;
+
 	
 public:
 	// <DO-NOT-MODIFY> {

@@ -12,3 +12,30 @@ void Team::setTeamRepresentative(Node* team) {
     teamRepresentative = team;
 
 }
+
+bool Team::operator>(const Team &other) const {
+    if(teamId > other.teamId){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+
+bool Team::operator==(const Team &other) const {
+    if (teamId == other.teamId){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+
+void Team::increaseNumberOfPlayers(int numOfPlayersAdded) {
+    numbOfPlayersInTeam += numOfPlayersAdded;
+
+}
+
+int Team::getNumOfPlayersInTeam() const {
+    return numbOfPlayersInTeam;
+}
