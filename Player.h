@@ -16,7 +16,7 @@ class Player {
     int ability;
     int cards;
     bool goalKeeper;
-    int numberOfGamesTeamPlayedBeforeInit;
+    long long int numberOfGamesTeamPlayedBeforeInit;
     Team* team;
 
 
@@ -26,6 +26,11 @@ public:
     int getPlayerId() const;
     permutation_t getSpirit() const;  //?
     Team* getTeam() const;
+
+
+    long long int getNumberOfGamesTeamPlayedBeforeInit() const;
+    void setNumberOfGamesTeamPlayedBeforeInit(long long int toSet) ;
+
 
     void setTeam(Team* teamToSet);
 

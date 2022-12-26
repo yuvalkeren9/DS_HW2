@@ -13,6 +13,8 @@ Node::Node(Player *player): player(player) {
     parent = nullptr;
     sizeOfTree = 1;
     smallestNodeSpirit = permutation_t::neutral();
+    wasRepresenative = false;
+    gamesPlayedRank = 0;
 }
 
 Player* Node::getPlayer() const {

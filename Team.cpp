@@ -36,6 +36,18 @@ void Team::increaseNumberOfPlayers(int numOfPlayersAdded) {
 
 }
 
-int Team::getNumOfPlayersInTeam() const {
+long long int Team::getNumOfPlayersInTeam() const {
     return numbOfPlayersInTeam;
+}
+
+bool Team::operator<(const Team &other) const {
+    return teamId < other.teamId;
+}
+
+long long int Team::getNumOfGamesPlayed() const {
+    return numOfGamesPlayed;
+}
+
+void Team::setNumOfGamesPlayed(long long int toSet) {
+    numOfGamesPlayed = toSet;
 }

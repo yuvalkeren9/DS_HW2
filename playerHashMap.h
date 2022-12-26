@@ -18,6 +18,8 @@ struct Node{            //circle
     Node* parent;
     int sizeOfTree;
     permutation_t smallestNodeSpirit;
+    bool wasRepresenative;
+    long long int gamesPlayedRank;
 
     Node(Player* player);
     Player* getPlayer() const;

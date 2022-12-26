@@ -3,6 +3,7 @@
 //
 
 #include "playerUnionFind.h"
+#include <cassert>
 
 
 Node* playerUnionFind::insertPlayer(Player *player) {
@@ -10,6 +11,7 @@ Node* playerUnionFind::insertPlayer(Player *player) {
     Node* node = new Node(player);
     if(team->getNumOfPlayersInTeam() == 0){
         team->setTeamRepresentative(node);
+        node->wasRepresenative = true;
     }
     else{
         Node* teamRepresenative = team->getTeamRepresentative();
@@ -33,8 +35,10 @@ Node* playerUnionFind::findTeamRootNode(Player* player) {
     Node* node = playerArray[index].node;
     Node* origNode = node;
     permutation_t allPermutation = permutation_t::neutral();
+    long long int allGamesPlayed = 0;
     while (node->parent != nullptr){
         allPermutation = allPermutation*node->rank;
+        allGamesPlayed += node->gamesPlayedRank;
         node = node->parent;
     }
     Node* root = node;
@@ -42,9 +46,18 @@ Node* playerUnionFind::findTeamRootNode(Player* player) {
     while (node->parent != root){
         Node* realParent = node->parent;
         node->parent = root;
+
+        //calculating permutation
         permutation_t oldRankInverse = node->rank.inv();
         node->rank = allPermutation;
         allPermutation = oldRankInverse * allPermutation;
+
+        //calculating gamesPlayed
+        long long int oldGamesPlayedRank = node->gamesPlayedRank;
+        node->gamesPlayedRank = allGamesPlayed;
+        allGamesPlayed = allGamesPlayed - oldGamesPlayedRank;
+
+
         node = realParent;
     }
     return root;
@@ -57,11 +70,15 @@ void playerUnionFind::playerUnion(Team* team1, Team* team2) {
         team1Root->sizeOfTree += team2Root->sizeOfTree;
         team2Root->parent = team1Root;
 
+        //updating permutations
         permutation_t oldSmallerRank = team2Root->rank;
         team2Root->rank =  team1Root->smallestNodeSpirit * team2Root->rank;
         team1Root->smallestNodeSpirit =  team1Root->smallestNodeSpirit * (oldSmallerRank * team2Root->smallestNodeSpirit);
+
+        //updating gamesRank
     }
-    else{       team2Root->sizeOfTree += team1Root->sizeOfTree;
+    else{
+        team2Root->sizeOfTree += team1Root->sizeOfTree;
         team1Root->parent = team2Root;
         team1Root->team = team2Root->team;
 
@@ -70,6 +87,8 @@ void playerUnionFind::playerUnion(Team* team1, Team* team2) {
         team1Root->rank = team1Root->rank * team2Root->rank.inv();
         team2Root->smallestNodeSpirit = team2Root->rank * (oldSmallerRank * team1Root->smallestNodeSpirit);
     }
+    team2Root.gamesPlayedRank = team2->getNumOfGamesPlayed() - team1->getNumOfGamesPlayed();
+
 }
 
 playerUnionFind::playerUnionFind() : playerArray() {
@@ -86,6 +105,22 @@ permutation_t playerUnionFind::getPlayerSpiral(Player *player) {
         node = node->parent;
     }
     return spiral;
+}
+
+
+long long int playerUnionFind::getPlayerNumOfGamesPlayed(Player *player) {
+    int index = playerArray.find(player);
+    //TODO: what to do when -1 returns?
+    Node* node = playerArray[index].node;
+    //TODO: maybe do shortcut thing?
+    long long int gamesPlayed = 0;
+    while(node != nullptr){
+        gamesPlayed += node->gamesPlayedRank  ;
+        node = node->parent;
+    }
+    assert(node->wasRepresenative == true);
+    gamesPlayed += node->team->getNumOfGamesPlayed();
+    return gamesPlayed;
 }
 
 permutation_t playerUnionFind::getPlayerRank(Player *player) {

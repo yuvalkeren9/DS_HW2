@@ -20,6 +20,7 @@ public :
     void playerUnion(Team* team1, Team* team2);
     permutation_t getPlayerSpiral(Player* player);
     Player* findPlayer(int playerId) const;
+    long long int getPlayerNumOfGamesPlayed(Player *player);
 
     playerUnionFind();
 

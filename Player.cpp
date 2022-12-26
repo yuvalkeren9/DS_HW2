@@ -19,3 +19,11 @@ Team *Player::getTeam() const {
 void Player::setTeam(Team *teamToSet) {
     team = teamToSet;
 }
+
+long long int Player::getNumberOfGamesTeamPlayedBeforeInit() const {
+    return numberOfGamesTeamPlayedBeforeInit;
+}
+
+void Player::setNumberOfGamesTeamPlayedBeforeInit(long long int toSet) {
+    numberOfGamesTeamPlayedBeforeInit = toSet;
+}

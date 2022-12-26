@@ -13,12 +13,15 @@ private:
     int teamId;
     Node* teamRepresentative;
     long long int numbOfPlayersInTeam;
+    long long int numOfGamesPlayed;
 
 public:
-    Team(int teamId) : teamId(teamId), teamRepresentative(nullptr), numbOfPlayersInTeam(0){};
+    Team(int teamId) : teamId(teamId), teamRepresentative(nullptr), numbOfPlayersInTeam(0), numOfGamesPlayed(0) {};
     Node* getTeamRepresentative() const;
     void setTeamRepresentative(Node* team);
-    int getNumOfPlayersInTeam() const;
+    long long int getNumOfPlayersInTeam() const;
+    long long int getNumOfGamesPlayed() const;
+    void setNumOfGamesPlayed(long long int toSet);
 
 
     void increaseNumberOfPlayers(int numOfPlayersAdded);
@@ -26,6 +29,7 @@ public:
 
     bool operator==(const Team& other) const;
     bool operator>(const Team& other) const;
+    bool operator<(const Team& other) const;
 };
 
 

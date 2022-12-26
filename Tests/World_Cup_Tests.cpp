@@ -50,7 +50,6 @@ bool getPartialTest1(){
 bool getRankOfTeamInTree(){
     AVL_Tree<Team> tree;
     tree.insert(new Team(5));
-
     tree.insert(new Team(1));
     tree.insert(new Team(2));
     tree.insert(new Team(4));
@@ -60,7 +59,22 @@ bool getRankOfTeamInTree(){
     tree.insert(new Team(10));
     tree.insert(new Team(9));
     tree.insert(new Team(3));
-    Team* team = tree.select(9);
+
+    tree.Delete(new Team(1));
+    tree.Delete(new Team(6));
+
+    tree.insert(new Team(12));
+    tree.insert(new Team(91));
+    tree.insert(new Team(31));
+
+    tree.Delete(new Team(10));
+    tree.Delete(new Team(3));
+    tree.Delete(new Team(31));
+
+
+
+
+    Team* team = tree.select(2+1);
     if(true){
         return true;
     }

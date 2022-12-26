@@ -123,16 +123,11 @@ StatusType world_cup_t::buy_team(int teamId1, int teamId2)
     if (teamId1 <= 0 || teamId2 <=0 || teamId1 == teamId2){
         return StatusType::INVALID_INPUT;
     }
-
-
     Team* team1 = searchTeamTree(teamId1);
     Team* team2 = searchTeamTree(teamId2);
     if (team1 == nullptr || team2 == nullptr){
         return  StatusType::FAILURE;
     }
-
-
-
     unionFind.playerUnion(team1, team2);
 
 

@@ -175,12 +175,12 @@ typename AVL_Tree<T>::Node *AVL_Tree<T>::insert_AUX(AVL_Tree::Node* current_root
     if (*(current_root->data) > *data_ptr ){
         //going into left node
         current_root->left = insert_AUX(current_root->left, data_ptr, status);
+        current_root->rank += 1;
         if (Node::get_height(current_root->left) + 1 <= Node::get_height(current_root)){
             return current_root;
 
         }
         current_root->height = 1 + max(Node::get_height(current_root->left), Node::get_height(current_root->right));
-        current_root->rank += 1;
         balance(current_root);
         if (was_tree_rotated){
             current_root = rotated_node;
@@ -191,11 +191,11 @@ typename AVL_Tree<T>::Node *AVL_Tree<T>::insert_AUX(AVL_Tree::Node* current_root
     //going into right node
     else{
         current_root->right = insert_AUX(current_root->right, data_ptr, status);
+        current_root->rank += 1;
         if (Node::get_height(current_root->right) + 1 <= Node::get_height(current_root)){
             return current_root;   //balance was not broken
         }
         current_root->height = 1 + max(Node::get_height(current_root->left), Node::get_height(current_root->right));
-        current_root->rank += 1;
         balance(current_root);
         if (was_tree_rotated){
             current_root = rotated_node;
@@ -555,6 +555,7 @@ typename AVL_Tree<T>::Node *AVL_Tree<T>::delete_AUX(AVL_Tree::Node *current_root
     if (current_root == nullptr) {
         return current_root;
     }
+    current_root->rank -= 1;
     current_root->height = 1 + max(Node::get_height(current_root->left), Node::get_height(current_root->right));//updating hight
     balance(current_root);// balance the tree if needed
     if (was_tree_rotated) {
