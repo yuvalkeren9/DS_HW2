@@ -52,6 +52,7 @@ public:
     int getPoints() const;
 
     permutation_t getTeamTotalSpirit() const;
+    teamByAbility* getTeamByAbility() const;
 
     /**
      *

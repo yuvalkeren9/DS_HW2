@@ -22,19 +22,23 @@
 #include "playerUnionFind.h"
 #include "playerHashMap.h"
 #include "Linked_List.h"
+#include "teamByAbility.h"
 
 class world_cup_t {
 private:
     AVL_Tree<Team> teamsRankTree;
+    AVL_Tree<teamByAbility> teamsByAbilityRankTree;
     playerUnionFind unionFind;
     Linked_List<Team> deletedTeamsList;
+    long long int numOfTeams;
 
 
+    void updateTeamByAbilityTree(int teamID , int toInc) ;
     Team* searchTeamTree(int teamId) const;
-
+    teamByAbility* searchTeamByAbilityTree(int teamId) const;
 	
 public:
-	// <DO-NOT-MODIFY> {
+	// <DO-NOT-MODIFY>
 	
 	world_cup_t();
 	virtual ~world_cup_t();

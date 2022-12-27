@@ -36,3 +36,7 @@ bool teamByAbility::operator==(const teamByAbility &other) const {
 bool teamByAbility::operator<(const teamByAbility &other) const {
     return teamAbility < other.teamAbility;
 }
+
+int teamByAbility::getId() {
+    return teamId;
+}

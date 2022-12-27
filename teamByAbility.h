@@ -13,6 +13,7 @@ private:
 public:
     teamByAbility(int teamId):teamId(teamId),teamAbility(0){};
     int getTeamAbility();
+    int getId();
     void IncTeamAbility(int toInc);
 
     bool operator==(const teamByAbility& other) const;
