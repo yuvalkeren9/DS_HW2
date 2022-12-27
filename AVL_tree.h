@@ -557,6 +557,7 @@ typename AVL_Tree<T>::Node *AVL_Tree<T>::delete_AUX(AVL_Tree::Node *current_root
     }
     current_root->rank -= 1;
     current_root->height = 1 + max(Node::get_height(current_root->left), Node::get_height(current_root->right));//updating hight
+    current_root->rank=-1;
     balance(current_root);// balance the tree if needed
     if (was_tree_rotated) {
         current_root = rotated_node;

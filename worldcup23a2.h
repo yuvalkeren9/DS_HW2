@@ -30,10 +30,6 @@ private:
     Linked_List<Team> deletedTeamsList;
 
 
-
-
-
-
     Team* searchTeamTree(int teamId) const;
 
 	
