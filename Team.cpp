@@ -59,3 +59,39 @@ bool Team::getIsActive() const {
 void Team::setIsActive(bool condition) {
     isActive = condition;
 }
+
+bool Team::getIsQualified() const {
+    return isQualified;
+}
+
+void Team::setIsQualified(bool condition) {
+    isQualified = condition;
+}
+
+void Team::increaseTeamAbility(int ability) {
+    teamAbility += ability;
+}
+
+int Team::getTeamAbility() const {
+    return teamAbility;
+}
+
+void Team::increasePoints(int pointsToAdd) {
+    points += points;
+}
+
+int Team::getPoints() const {
+    return points;
+}
+
+void Team::updateTeamSpiritRightSide(permutation_t permut) {
+    teamSpirit = teamSpirit * permut;
+}
+
+void Team::updateTeamSpiritLeftSide(permutation_t permut) {
+    teamSpirit = permut * teamSpirit;
+}
+
+permutation_t Team::getTotalSpirit() const {
+    return teamSpirit;
+}

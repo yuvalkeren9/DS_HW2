@@ -70,16 +70,71 @@ StatusType world_cup_t::add_player(int playerId, int teamId,
     auto player = new Player(playerId, teamId, spirit, gamesPlayed, ability, cards, goalKeeper);
     player->setTeam(team);
     unionFind.insertPlayer(player);
+
     team->increaseNumberOfPlayers(1);
+    team->increaseTeamAbility(ability);
+    team->updateTeamSpiritRightSide(spirit);
+
+    if (goalKeeper == true){
+        team->setIsActive(true);
+    }
 	return StatusType::SUCCESS;
 }
 
 output_t<int> world_cup_t::play_match(int teamId1, int teamId2)
 {
-    //TODO: this function. Made fake impllnation for testing
+    //input check
+    if(teamId1 <=0 || teamId2 <= 0 || teamId1 == teamId2){
+        return StatusType::INVALID_INPUT;
+    }
+
     Team* team1 = searchTeamTree(teamId1);
     Team* team2 = searchTeamTree(teamId2);
 
+    if(team1 == nullptr || team2 == nullptr){
+        return StatusType::FAILURE;
+    }
+    if (team1->getIsQualified() == false || team2->getIsQualified() == false){
+        return StatusType::FAILURE;
+    }
+
+    static int numberOfPointsUponVictory = 3;
+    static int numberOfPointsUponTie = 1;
+
+    //starting match
+    int result = 0;
+    long long int team1Score = team1->getTotalScore();
+    long long int team2Score = team2->getTeamTotalScore();
+    if (team1Score > team2Score){
+        result = 1;
+        team1->increasePoints(numberOfPointsUponVictory);
+    }
+    else if (team1Score < team2Score){
+        result = 3;
+        team2->increasePoints(numberOfPointsUponVictory);
+    }
+    else{      //ability and team points are equal
+        permutation_t team1Permut = team1->getTeamTotalSpirit();
+        permutation_t team2Permut = team2->getTeamTotalSpirit();
+        int team1SpiritStrength = team1Permut.strength();
+        int team2SpiritStrength = team2Permut.strength();
+        if(team1SpiritStrength > team2SpiritStrength){
+            result = 2;
+            team1->increasePoints(numberOfPointsUponVictory);
+        }
+        else if( team1SpiritStrength < team2SpiritStrength){
+            result = 4;
+            team2->increasePoints(numberOfPointsUponVictory);
+        }
+        else{ //there is a tie
+            result = 0;
+            team1->increasePoints(numberOfPointsUponTie);
+            team2->increasePoints(numberOfPointsUponTie);
+
+        }
+
+
+    }
     team1->incNumOfGamesPlayed(1);
     team2->incNumOfGamesPlayed(1);
 	return StatusType::SUCCESS;
@@ -152,7 +207,15 @@ StatusType world_cup_t::buy_team(int teamId1, int teamId2)
     }
     unionFind.playerUnion(team1, team2);
 
-
+    //updating team1 stats
+    team1->increasePoints(team2->getPoints());
+    team1->increaseTeamAbility(team2->getTeamAbility());
+    team1->updateTeamSpiritRightSide(team2->getTotalSpirit());
+    //if the bought team was qualified, now team1 is also qualified
+    if (team2->getIsQualified()){
+        team1->setIsQualified(true);
+    }
+    remove_team(teamId2);
     return StatusType::SUCCESS;
 }
 

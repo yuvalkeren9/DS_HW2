@@ -109,6 +109,7 @@ permutation_t playerUnionFind::getPlayerSpiral(Player *player) {
         spiral = node->rank * spiral ;
         node = node->parent;
     }
+
     return spiral;
 }
 
@@ -120,7 +121,7 @@ int playerUnionFind::getPlayerNumOfGamesPlayed(Player *player) {
     //TODO: maybe do shortcut thing?
     int gamesPlayed = 0;
     while(node->parent != nullptr){
-        gamesPlayed += node->gamesPlayedRank  ;
+        gamesPlayed += node->gamesPlayedRank;
         node = node->parent;
     }
     assert(node->wasRepresenative == true);
