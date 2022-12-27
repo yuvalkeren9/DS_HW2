@@ -146,6 +146,44 @@ bool getNumOfPlayedGamesTest1(){
 
 }
 
+
+bool getRankOfTeamInTree(){
+    AVL_Tree<Team> tree;
+    tree.insert(new Team(5));
+    tree.insert(new Team(1));
+    tree.insert(new Team(2));
+    tree.insert(new Team(4));
+    tree.insert(new Team(7));
+    tree.insert(new Team(8));
+    tree.insert(new Team(6));
+    tree.insert(new Team(10));
+    tree.insert(new Team(9));
+    tree.insert(new Team(3));
+
+    tree.Delete(new Team(1));
+    tree.Delete(new Team(6));
+
+    tree.insert(new Team(12));
+    tree.insert(new Team(91));
+    tree.insert(new Team(31));
+
+    tree.Delete(new Team(10));
+    tree.Delete(new Team(3));
+    tree.Delete(new Team(31));
+
+
+
+
+    Team* team = tree.select(2+1);
+    if(true){
+        return true;
+    }
+    return true;
+}
+
+
+
+
 bool addTeamTest1(){
     world_cup_t worldCup;
     StatusType status12 = worldCup.add_team(0);
@@ -166,14 +204,19 @@ bool addTeamTest1(){
 
 
     if (status1 == StatusType::SUCCESS && status2 == StatusType::SUCCESS && status3 == StatusType::SUCCESS &&
-            status4 == StatusType::SUCCESS && status5 == StatusType::SUCCESS && status6 == StatusType::SUCCESS &&
-            status7 == StatusType::SUCCESS && status10 == StatusType::INVALID_INPUT && status11 == StatusType::INVALID_INPUT &&
-            status12 == StatusType::INVALID_INPUT && status1 == StatusType::SUCCESS &&
-            )
-}
+        status4 == StatusType::SUCCESS && status5 == StatusType::SUCCESS && status6 == StatusType::SUCCESS &&
+        status7 == StatusType::SUCCESS && status10 == StatusType::INVALID_INPUT && status11 == StatusType::INVALID_INPUT &&
+        status12 == StatusType::INVALID_INPUT && status100 == StatusType::FAILURE && status101 == StatusType::FAILURE &&
+        status102 == StatusType::FAILURE) {
+    return true;
+    }
+    return false;
+};
 
 int main(){
     if(!run_test(getNumOfPlayedGamesTest1, "getNumOfPlayedGamesTest1"))
+        return 1;
+    if(!run_test(addTeamTest1, "addTeamTest1"))
         return 1;
     return 0;
 
