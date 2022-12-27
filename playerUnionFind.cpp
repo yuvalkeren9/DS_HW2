@@ -32,7 +32,7 @@ Node* playerUnionFind::insertPlayer(Player *player) {
 }
 
 
-Node* playerUnionFind::findTeamRootNode(Player* player) {
+Team * playerUnionFind::findTeamRootNode(Player* player) {
     int index = playerArray.find(player);
 
     //TODO: what to do when -1 returns?
@@ -65,7 +65,7 @@ Node* playerUnionFind::findTeamRootNode(Player* player) {
 
         node = realParent;
     }
-    return root;
+    return root->team;
 }
 
 void playerUnionFind::playerUnion(Team* team1, Team* team2) {
@@ -109,7 +109,8 @@ permutation_t playerUnionFind::getPlayerSpiral(Player *player) {
         spiral = node->rank * spiral ;
         node = node->parent;
     }
-
+    //making shortcuts
+    findTeamRootNode(player);
     return spiral;
 }
 
@@ -128,6 +129,9 @@ int playerUnionFind::getPlayerNumOfGamesPlayed(Player *player) {
     gamesPlayed += node->gamesPlayedRank;
     gamesPlayed += node->team->getNumOfGamesPlayed();
     Team* team = node->team;
+
+    //making shortcuts
+    findTeamRootNode(player);
     return gamesPlayed;
 }
 

@@ -52,7 +52,7 @@ private:
     T* select_AUX(Node* node, int k) const;
 
 
-        public:
+public:
     AVL_Tree(): was_tree_rotated(false), rotated_node(nullptr), main_root(nullptr) {};
     ~AVL_Tree(){  destroy_AUX(main_root);  }
     AVL_Tree& operator=(const AVL_Tree<T>& other);

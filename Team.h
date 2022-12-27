@@ -47,7 +47,7 @@ public:
     void increasePoints(int pointsToAdd);
     int getPoints() const;
 
-    permutation_t getTotalSpirit() const;
+    permutation_t getTeamTotalSpirit() const;
 
     /**
      *
@@ -59,6 +59,9 @@ public:
      * @param permutaion to multiple to be on left side
      */
     void updateTeamSpiritLeftSide(permutation_t permut);
+
+
+    int getTeamTotalScore() const;
 
 
     bool operator==(const Team& other) const;
