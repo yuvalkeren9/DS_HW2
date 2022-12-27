@@ -30,9 +30,9 @@ bool getPartialTest1(){
     worldCup.add_team(3);
 
     int permut1[5] = {1,0,2,3,4};   //(0,1)  a
-    int permut2[5] = {0,1,3,4,2};   //(3,4)   b
+    int permut2[5] = {0,1,3,4,2};   //(2,3,4)   b
     int permut3[5] = {4,2,3,1,0};   //(0,4)(1,2,3)  c
-    int permut4[5] = {2,0,1,3,4};   //(0,1,2)  d
+    int permut4[5] = {2,0,1,3,4};   //(0,2,1)  d
     int permut5[5] = {2,3,0,1,4};   //(0,2)(1,3)  e
 
     worldCup.add_player(1,1,permut1,0,0,0,true);  //a
@@ -51,11 +51,11 @@ bool getPartialTest1(){
     output_t<permutation_t> p4 = worldCup.get_partial_spirit(4);
     output_t<permutation_t> p5 = worldCup.get_partial_spirit(5);
 
-    cout << "First player permut is:"; p1.ans().print(); cout <<endl;
-    cout << "second player permut is:"; p2.ans().print(); cout <<endl;
-    cout << "third player permut is:"; p3.ans().print(); cout <<endl;
-    cout << "fourth player permut is:"; p4.ans().print(); cout <<endl;
-    cout << "fifth player permut is:"; p5.ans().print(); cout <<endl;
+    cout << "A player permut is:"; p1.ans().print(); cout <<endl;
+    cout << "B player permut is:"; p2.ans().print(); cout <<endl;
+    cout << "C player permut is:"; p3.ans().print(); cout <<endl;
+    cout << "D player permut is:"; p4.ans().print(); cout <<endl;
+    cout << "E player permut is:"; p5.ans().print(); cout <<endl;
 
 
 
@@ -218,7 +218,11 @@ int main(){
         return 1;
     if(!run_test(addTeamTest1, "addTeamTest1"))
         return 1;
+    if(!run_test(getPartialTest1, "getPartialTest1"))
+        return 1;
     return 0;
+
+
 
 //    getNumOfPlayedGamesTest1();
 //    getRankOfTeamInTree();
