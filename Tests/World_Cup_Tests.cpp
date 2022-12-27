@@ -111,6 +111,9 @@ bool getNumOfPlayedGamesTest1(){
     worldCup.play_match(1,3);
     worldCup.add_player(300,1,permut1,0,0,0,true);
 
+    worldCup.add_player(500,3,permut1,0,0,0,true);
+    worldCup.play_match(1,3);
+
 
     output_t<int> r1 = worldCup.num_played_games_for_player(1);
     output_t<int> r2 = worldCup.num_played_games_for_player(2);
@@ -129,11 +132,13 @@ bool getNumOfPlayedGamesTest1(){
     output_t<int> r26 = worldCup.num_played_games_for_player(26);
 
     output_t<int> r300 = worldCup.num_played_games_for_player(300);
+    output_t<int> r500 = worldCup.num_played_games_for_player(500);
+
 
 
     if (r1.ans() == 5 &&  r2.ans() == 5 && r3.ans() == 5 && r4.ans() == 5 && r5.ans() == 5 && r6.ans() == 3 && r7.ans() == 3 &&
             r8.ans() == 3 && r21.ans() == 5 && r22.ans() == 5 && r23.ans() == 5 && r24.ans() == 1 && r25.ans() == 1 && r26.ans() == 1 &&
-            r300.ans() == 0){
+            r300.ans() == 1 && r500.ans() == 1){
         return true;
     }
     return false;
@@ -175,6 +180,41 @@ bool getRankOfTeamInTree(){
     }
     return true;
 }
+
+
+
+bool addTeamTest1(){
+    world_cup_t worldCup;
+    StatusType status12 = worldCup.add_team(0);
+    StatusType status1 = worldCup.add_team(5);
+    StatusType status2 = worldCup.add_team(6);
+    StatusType status10 = worldCup.add_team(-3);
+    StatusType status3 = worldCup.add_team(54);
+    StatusType status102 = worldCup.add_team(54);
+    StatusType status101 = worldCup.add_team(5);
+    StatusType status4 = worldCup.add_team(52);
+    StatusType status11 = worldCup.add_team(-7);
+    StatusType status5 = worldCup.add_team(580);
+    StatusType status6 = worldCup.add_team(253);
+    StatusType status7 = worldCup.add_team(3);
+    StatusType status100 = worldCup.add_team(3);
+
+
+
+
+    if (status1 == StatusType::SUCCESS && status2 == StatusType::SUCCESS && status3 == StatusType::SUCCESS &&
+            status4 == StatusType::SUCCESS && status5 == StatusType::SUCCESS && status6 == StatusType::SUCCESS &&
+            status7 == StatusType::SUCCESS && status10 == StatusType::INVALID_INPUT && status11 == StatusType::INVALID_INPUT &&
+            status12 == StatusType::INVALID_INPUT && status1 == StatusType::SUCCESS &&
+            )
+
+
+
+
+
+};
+
+
 
 
 

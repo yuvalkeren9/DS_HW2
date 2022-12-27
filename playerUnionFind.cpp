@@ -34,9 +34,7 @@ Node* playerUnionFind::insertPlayer(Player *player) {
 
 Team * playerUnionFind::findTeamRootNode(Player* player) {
     int index = playerArray.find(player);
-
-    //TODO: what to do when -1 returns?
-
+    assert( index != -1);
     Node* node = playerArray[index].node;
     Node* origNode = node;
     permutation_t allPermutation = permutation_t::neutral();
@@ -48,6 +46,9 @@ Team * playerUnionFind::findTeamRootNode(Player* player) {
     }
     Node* root = node;
     node = origNode;
+    if (origNode == root){
+        return root->team;
+    }
     while (node->parent != root){
         Node* realParent = node->parent;
         node->parent = root;
@@ -101,9 +102,8 @@ playerUnionFind::playerUnionFind() : playerArray() {
 
 permutation_t playerUnionFind::getPlayerSpiral(Player *player) {
     int index = playerArray.find(player);
-    //TODO: what to do when -1 returns?
+    assert( index != -1);
     Node* node = playerArray[index].node;
-    //TODO: maybe do shortcut thing?
     permutation_t spiral = permutation_t::neutral();
     while(node != nullptr){
         spiral = node->rank * spiral ;
@@ -117,9 +117,8 @@ permutation_t playerUnionFind::getPlayerSpiral(Player *player) {
 
 int playerUnionFind::getPlayerNumOfGamesPlayed(Player *player) {
     int index = playerArray.find(player);
-    //TODO: what to do when -1 returns?
+    assert( index != -1);
     Node* node = playerArray[index].node;
-    //TODO: maybe do shortcut thing?
     int gamesPlayed = 0;
     while(node->parent != nullptr){
         gamesPlayed += node->gamesPlayedRank;
@@ -137,9 +136,7 @@ int playerUnionFind::getPlayerNumOfGamesPlayed(Player *player) {
 
 permutation_t playerUnionFind::getPlayerRank(Player *player) {
     int index = playerArray.find(player);
-
-    //TODO: what to do when -1 returns?
-
+    assert( index != -1);
     Node* node = playerArray[index].node;
     return node->rank;
 }
@@ -152,5 +149,6 @@ Player* playerUnionFind::findPlayer(int playerId) const {
     Node* node = playerArray[index].node;
     return node->player;
 }
+
 
 

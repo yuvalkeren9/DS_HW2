@@ -45,6 +45,7 @@ public:
         array = new playerStruct[initialSize];
     }
     ~playerHashMap() {
+        emptyArray();
         delete[] array;
     }
     void add(Node* node);
@@ -70,6 +71,7 @@ private:
     void expand();
     int hash(int playerId) const;
     void remap(playerStruct* oldArray, playerStruct* newArray);
+    void emptyArray();
     static int hashFunction1(int playerID, int module);
     static int hashFunction2(int playerID, int module);
 };

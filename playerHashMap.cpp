@@ -29,13 +29,10 @@ Team* Node::getTeam() const {
     return team;
 }
 
-
 void playerHashMap::add(Node* node) {
     Player* player = node->getPlayer();
     int playerId = player->getPlayerId();
-    if (find(player) != -1){
-        return;  //TODO: maybe return failed?
-    }
+    assert(find(player) == -1);
     int index = hash(playerId);
     if(array[index].isEmpty)  //object isnt already in hash map
     {
@@ -68,7 +65,10 @@ void playerHashMap::expand() {
         arrayLength *=2;
     }
     catch (std::bad_alloc& e){
-        return;   //TODO: something
+        array = temp;
+        emptyArray();
+        delete[] temp;
+        throw e;
     }
     remap(temp, array);
     delete[] temp;
@@ -113,6 +113,13 @@ int playerHashMap::findUsingId(int playerId) const {
 playerStruct &playerHashMap::operator[](int index) const {
     assert(index < arrayLength);
     return array[index];
+}
+
+void playerHashMap::emptyArray() {
+    for (int i=0; i < arrayLength; ++i){
+        Node* node = array[i].node;
+        delete node;
+    }
 }
 
 

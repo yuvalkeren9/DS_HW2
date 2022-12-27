@@ -81,7 +81,7 @@ StatusType world_cup_t::add_player(int playerId, int teamId,
     team->updateTeamSpiritRightSide(spirit);
 
     if (goalKeeper == true){
-        team->setIsActive(true);
+        team->setIsQualified(true);
     }
 	return StatusType::SUCCESS;
 }
