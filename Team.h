@@ -6,6 +6,7 @@
 #define DS2_TEAM_H
 
 #include "wet2util.h"
+#include "teamByAbility.h"
 
 class Node;
 
@@ -20,6 +21,9 @@ private:
     int points;
     int teamAbility;
     permutation_t teamSpirit;
+    teamByAbility* teamByAbilityPtr;
+
+
 
 
 public:
@@ -48,6 +52,7 @@ public:
     int getPoints() const;
 
     permutation_t getTeamTotalSpirit() const;
+    teamByAbility* getTeamByAbility() const;
 
     /**
      *

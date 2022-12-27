@@ -99,3 +99,7 @@ permutation_t Team::getTeamTotalSpirit() const {
 int Team::getTeamTotalScore() const {
     return points + teamAbility;
 }
+
+teamByAbility *Team::getTeamByAbility() const {
+    return teamByAbilityPtr;
+}

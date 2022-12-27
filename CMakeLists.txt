@@ -19,4 +19,4 @@ add_executable(
         playerUnionFind.h
         Tests/World_Cup_Tests.cpp
         #Tests/UnionFindTests.cpp
-        Linked_List.h)
+        Linked_List.cpp Linked_List.h)
