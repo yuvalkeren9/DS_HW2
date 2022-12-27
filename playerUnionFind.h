@@ -16,7 +16,7 @@
 class playerUnionFind {
 public :
     Node* insertPlayer(Player* player);
-    Node* findTeamRootNode(Player* player);
+    Team * findTeamRootNode(Player* player);
     void playerUnion(Team* team1, Team* team2);
     permutation_t getPlayerSpiral(Player* player);
     Player* findPlayer(int playerId) const;

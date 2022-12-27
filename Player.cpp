@@ -27,3 +27,11 @@ long long int Player::getNumberOfGamesTeamPlayedBeforeInit() const {
 void Player::setNumberOfGamesTeamPlayedBeforeInit(long long int toSet) {
     numberOfGamesTeamPlayedBeforeInit = toSet;
 }
+
+int Player::getNumOfCards() const {
+    return cards;
+}
+
+void Player::incNumOfCards(int cardsToAdd) {
+    cards +=cardsToAdd;
+}

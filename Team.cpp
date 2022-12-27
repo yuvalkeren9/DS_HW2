@@ -92,6 +92,10 @@ void Team::updateTeamSpiritLeftSide(permutation_t permut) {
     teamSpirit = permut * teamSpirit;
 }
 
-permutation_t Team::getTotalSpirit() const {
+permutation_t Team::getTeamTotalSpirit() const {
     return teamSpirit;
+}
+
+int Team::getTeamTotalScore() const {
+    return points + teamAbility;
 }

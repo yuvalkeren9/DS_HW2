@@ -1,13 +1,18 @@
 #include "worldcup23a2.h"
 
-world_cup_t::world_cup_t()
+AVL_Tree<Team> teamsRankTree;
+playerUnionFind unionFind;
+Linked_List<Team> deletedTeamsList;
+
+
+world_cup_t::world_cup_t() :teamsRankTree(), unionFind(), deletedTeamsList()
 {
-	// TODO: Your code goes here
+
 }
 
 world_cup_t::~world_cup_t()
 {
-	// TODO: Your code goes here
+    teamsRankTree.emptyTree();
 }
 
 StatusType world_cup_t::add_team(int teamId)
@@ -103,7 +108,7 @@ output_t<int> world_cup_t::play_match(int teamId1, int teamId2)
 
     //starting match
     int result = 0;
-    long long int team1Score = team1->getTotalScore();
+    long long int team1Score = team1->getTeamTotalScore();
     long long int team2Score = team2->getTeamTotalScore();
     if (team1Score > team2Score){
         result = 1;
@@ -132,8 +137,6 @@ output_t<int> world_cup_t::play_match(int teamId1, int teamId2)
             team2->increasePoints(numberOfPointsUponTie);
 
         }
-
-
     }
     team1->incNumOfGamesPlayed(1);
     team2->incNumOfGamesPlayed(1);
@@ -155,20 +158,47 @@ output_t<int> world_cup_t::num_played_games_for_player(int playerId)
 
 StatusType world_cup_t::add_player_cards(int playerId, int cards)
 {
-	// TODO: Your code goes here
-	return StatusType::SUCCESS;
+    //input check
+    if (playerId <= 0 || cards <=0){
+        return StatusType::INVALID_INPUT;
+    }
+
+    //finding the player in the hashMap
+    Player* player = unionFind.findPlayer(playerId);
+    if(player == nullptr){
+        return StatusType::FAILURE;
+    }
+    Team* team = unionFind.findTeamRootNode(player);
+    if (team->getIsActive() == false){
+        return StatusType::FAILURE;
+    }
+    player->incNumOfCards(cards);
+    return StatusType::SUCCESS;
 }
 
 output_t<int> world_cup_t::get_player_cards(int playerId)
 {
-	// TODO: Your code goes here
-	return StatusType::SUCCESS;
+    //input check
+    if (playerId <= 0){
+        return StatusType::INVALID_INPUT;
+    }
+    Player* player = unionFind.findPlayer(playerId);
+    if(player == nullptr){
+        return StatusType::FAILURE;
+    }
+	return player->getNumOfCards();
 }
 
 output_t<int> world_cup_t::get_team_points(int teamId)
 {
-	// TODO: Your code goes here
-	return 30003;
+    if (teamId <= 0){
+        return StatusType::INVALID_INPUT;
+    }
+    Team* team = searchTeamTree(teamId);
+    if(team == nullptr){
+        return StatusType::FAILURE;
+    }
+	return team->getPoints();
 }
 
 output_t<int> world_cup_t::get_ith_pointless_ability(int i)
@@ -210,7 +240,7 @@ StatusType world_cup_t::buy_team(int teamId1, int teamId2)
     //updating team1 stats
     team1->increasePoints(team2->getPoints());
     team1->increaseTeamAbility(team2->getTeamAbility());
-    team1->updateTeamSpiritRightSide(team2->getTotalSpirit());
+    team1->updateTeamSpiritRightSide(team2->getTeamTotalSpirit());
     //if the bought team was qualified, now team1 is also qualified
     if (team2->getIsQualified()){
         team1->setIsQualified(true);
