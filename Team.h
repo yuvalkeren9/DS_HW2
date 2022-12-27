@@ -50,6 +50,7 @@ public:
 
     void increasePoints(int pointsToAdd);
     int getPoints() const;
+    void setTeamByAbilityPtr(teamByAbility* toSet);
 
     permutation_t getTeamTotalSpirit() const;
     teamByAbility* getTeamByAbility() const;

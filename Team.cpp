@@ -103,3 +103,7 @@ int Team::getTeamTotalScore() const {
 teamByAbility *Team::getTeamByAbility() const {
     return teamByAbilityPtr;
 }
+
+void Team::setTeamByAbilityPtr(teamByAbility *toSet) {
+    this->teamByAbilityPtr=toSet;
+}

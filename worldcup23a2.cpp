@@ -24,8 +24,11 @@ StatusType world_cup_t::add_team(int teamId)
         return StatusType::FAILURE;
     }
     try {
-        teamsRankTree.insert(new Team(teamId));
-        teamsByAbilityRankTree.insert(new teamByAbility(teamId));
+        Team* team =new Team(teamId);
+        teamsRankTree.insert(team);
+        teamByAbility* teamRocket = new teamByAbility(teamId);
+        team->setTeamByAbilityPtr(teamRocket);
+        teamsByAbilityRankTree.insert(teamRocket);
         numOfTeams++;
     } catch(bad_alloc &e){
         return StatusType::ALLOCATION_ERROR;
