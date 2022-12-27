@@ -7,7 +7,6 @@ Linked_List<Team> deletedTeamsList;
 
 world_cup_t::world_cup_t() :teamsRankTree(), unionFind(), deletedTeamsList(), numOfTeams(0)
 {
-
 }
 
 world_cup_t::~world_cup_t()
@@ -118,12 +117,10 @@ output_t<int> world_cup_t::play_match(int teamId1, int teamId2)
     if (team1Score > team2Score){
         result = 1;
         team1->increasePoints(numberOfPointsUponVictory);
-        updateTeamByAbilityTree(teamId1,numberOfPointsUponVictory);
     }
     else if (team1Score < team2Score){
         result = 3;
         team2->increasePoints(numberOfPointsUponVictory);
-        updateTeamByAbilityTree(teamId2,numberOfPointsUponVictory);
     }
     else{      //ability and team points are equal
         permutation_t team1Permut = team1->getTeamTotalSpirit();
@@ -133,19 +130,15 @@ output_t<int> world_cup_t::play_match(int teamId1, int teamId2)
         if(team1SpiritStrength > team2SpiritStrength){
             result = 2;
             team1->increasePoints(numberOfPointsUponVictory);
-            updateTeamByAbilityTree(teamId1,numberOfPointsUponVictory);
         }
         else if( team1SpiritStrength < team2SpiritStrength){
             result = 4;
             team2->increasePoints(numberOfPointsUponVictory);
-            updateTeamByAbilityTree(teamId2,numberOfPointsUponVictory);
         }
         else{ //there is a tie
             result = 0;
             team1->increasePoints(numberOfPointsUponTie);
-            updateTeamByAbilityTree(teamId1,numberOfPointsUponTie);
             team2->increasePoints(numberOfPointsUponTie);
-            updateTeamByAbilityTree(teamId2,numberOfPointsUponTie);
 
         }
     }
@@ -277,18 +270,12 @@ Team *world_cup_t::searchTeamTree(int teamId) const {
     return team;
 }
 
- void world_cup_t::updateTeamByAbilityTree(int teamID, int toInc)  {
-    teamByAbility* team1 = searchTeamByAbilityTree(teamID);
+ void world_cup_t::updateTeamByAbilityTree(int teamId, int toInc)  {
+     Team *tempTeam = searchTeamTree(teamId);
+    teamByAbility* team1 =tempTeam->getTeamByAbility();
     this->teamsByAbilityRankTree.Delete(team1);
     team1->IncTeamAbility(toInc);
     teamsByAbilityRankTree.insert(team1);
 }
 
-teamByAbility *world_cup_t::searchTeamByAbilityTree(int teamId) const {
-    teamByAbility tempTeam = teamByAbility(teamId);
-    teamByAbility* tempTeamPtr = &tempTeam;
-    StatusType tempStatus = StatusType::SUCCESS;
-    StatusType* tempStatusPtr = &tempStatus;
-    teamByAbility* team = teamsByAbilityRankTree.search(tempTeamPtr,tempStatusPtr);
-    return team;
-}
+
