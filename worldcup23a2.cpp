@@ -52,10 +52,15 @@ StatusType world_cup_t::remove_team(int teamId)
     numOfTeams--;
     team->setIsActive(false);
 
-    try {
-        deletedTeamsList.insert(team);
-    } catch (bad_alloc& e){
-        return StatusType::ALLOCATION_ERROR;
+    if (team->getNumOfPlayersInTeam() != 0) {
+        try {
+            deletedTeamsList.insert(team);
+        } catch (bad_alloc &e) {
+            return StatusType::ALLOCATION_ERROR;
+        }
+    }
+    else{
+        delete team;
     }
 
     return StatusType::SUCCESS;
@@ -254,6 +259,7 @@ StatusType world_cup_t::buy_team(int teamId1, int teamId2)
     team1->increaseTeamAbility(team2->getTeamAbility());
     updateTeamByAbilityTree(teamId1,team2->getTeamAbility());
     team1->updateTeamSpiritRightSide(team2->getTeamTotalSpirit());
+    team1->increaseNumberOfPlayers(team2->getNumOfPlayersInTeam());
     //if the bought team was qualified, now team1 is also qualified
     if (team2->getIsQualified()){
         team1->setIsQualified(true);

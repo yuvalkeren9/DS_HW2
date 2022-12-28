@@ -299,6 +299,112 @@ bool addPlayerTest1(){
     return true;
 }
 
+
+bool playMatchTest1(){
+    world_cup_t worldCup;
+    worldCup.add_team(1);
+    worldCup.add_team(2);
+    worldCup.add_team(3);
+    worldCup.add_team(4);
+    worldCup.add_team(5);
+    worldCup.add_team(6);
+    worldCup.add_team(7);
+
+    int permut1[5] = {1,0,2,3,4};
+
+    worldCup.add_player(1,1,permut1,0,1,1,true);
+    worldCup.add_player(2,2,permut1,0,2,1,true);
+    worldCup.add_player(3,3,permut1,0,3,1,true);
+    worldCup.add_player(4,4,permut1,0,4,1,true);
+    worldCup.add_player(5,5,permut1,0,5,1,false);
+
+    output_t<int> result1 = worldCup.play_match(1,2);
+    output_t<int> result2 = worldCup.play_match(-1,2);
+    output_t<int> result3 = worldCup.play_match(1,-2);
+    output_t<int> result4 = worldCup.play_match(1,1);
+    output_t<int> result5 = worldCup.play_match(0,2);
+
+    if (result1.status() != StatusType::SUCCESS || result2.status() != StatusType::INVALID_INPUT || result3.status() != StatusType::INVALID_INPUT ||
+            result4.status() != StatusType::INVALID_INPUT || result5.status() != StatusType::INVALID_INPUT){
+        return false;
+    }
+
+    output_t<int> result6 = worldCup.play_match(1,5);
+    output_t<int> result7 = worldCup.play_match(5,2);
+    output_t<int> result8 = worldCup.play_match(1,1997);
+    output_t<int> result9 = worldCup.play_match(1997,1);
+    if (result6.status() != StatusType::FAILURE || result7.status() != StatusType::FAILURE || result8.status() != StatusType::FAILURE ||
+        result9.status() != StatusType::FAILURE){
+        return false;
+    }
+
+    output_t<int> result10 = worldCup.play_match(1,2);
+    worldCup.add_player(1997,5,permut1,0,0,0,true);
+    output_t<int> result12 = worldCup.play_match(1,5);
+    output_t<int> result13 = worldCup.play_match(4,3);
+
+    if (result10.status() != StatusType::SUCCESS || result12.status() != StatusType::SUCCESS || result13.status() != StatusType::SUCCESS){
+        return false;
+    }
+
+    return true;
+}
+
+bool playMatchTest2(){
+    world_cup_t worldCup;
+    worldCup.add_team(1);
+    worldCup.add_team(2);
+    worldCup.add_team(3);
+    worldCup.add_team(4);
+    worldCup.add_team(5);
+    worldCup.add_team(6);
+    worldCup.add_team(7);
+
+    int permut1[5] = {1,0,2,3,4};
+    int permut2[5] = {0,1,3,4,2};
+    int permut3[5] = {4,2,3,1,0};
+    int permut4[5] = {2,0,1,3,4};
+
+    permutation_t spirit1(permut1); //54
+    permutation_t spirit2(permut2); //52
+    permutation_t spirit3(permut3); //36
+    permutation_t spirit4(permut4); //52
+
+//    cout << "sprit 1 strength is " << spirit1.strength() << endl;
+//    cout << "sprit 2 strength is " << spirit2.strength() << endl;
+//    cout << "sprit 3 strength is " << spirit3.strength() << endl;
+//    cout << "sprit 4 strength is " << spirit4.strength() << endl;
+
+
+    worldCup.add_player(1,1,permut1,0,1,1,true);
+    worldCup.add_player(2,2,permut2,0,2,1,true);
+    output_t<int> result1 = worldCup.play_match(1,2);  //2 wins ,3 returned
+    output_t<int> result2 = worldCup.play_match(2,1);  //2 wins, 1 returned
+
+    worldCup.add_player(4,4,permut4,0,4,1,true);
+    worldCup.add_player(5,5,permut2,0,4,1,true);
+    output_t<int> result3 = worldCup.play_match(4,5);  //tie, 0 returned
+
+    worldCup.add_player(3,3,permut3,0,5,1,true);
+    output_t<int> result4 = worldCup.play_match(3,4); //4 wins by spirit, 4 returned
+    output_t<int> result5 = worldCup.play_match(4,3); //4 wins regular, 1 returned
+
+    worldCup.add_team(10);
+    worldCup.add_team(20);
+    worldCup.add_player(10,10, permut1, 0, 10, 0, true);
+    worldCup.add_player(20,20, permut2, 0, 10, 0, true);
+    output_t<int> result6 = worldCup.play_match(10,20); //10 wins by spirit, 2 returned
+
+
+
+    if (result6.ans() != 2 || result1.ans() != 3 || result2.ans() != 1 || result3.ans() != 0  || result4.ans() != 4 ||
+            result5.ans() != 1){
+        return false;
+    }
+
+    return true;
+}
+
 int main(){
     if(!run_test(getNumOfPlayedGamesTest1, "getNumOfPlayedGamesTest1"))
         return 1;
@@ -308,6 +414,12 @@ int main(){
         return 1;
     if(!run_test(addPlayerTest1, "addPlayerTest1"))
         return 1;
+    if(!run_test(playMatchTest1, "playMatchTest1"))
+        return 1;
+    if(!run_test(playMatchTest2, "playMatchTest2"))
+        return 1;
+
+
     if(!run_test(getPartialTest1, "getPartialTest1"))
         return 1;
     return 0;

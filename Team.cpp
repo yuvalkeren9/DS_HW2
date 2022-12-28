@@ -31,7 +31,7 @@ bool Team::operator==(const Team &other) const {
     }
 }
 
-void Team::increaseNumberOfPlayers(int numOfPlayersAdded) {
+void Team::increaseNumberOfPlayers(long long int numOfPlayersAdded) {
     numbOfPlayersInTeam += numOfPlayersAdded;
 
 }
@@ -77,7 +77,7 @@ int Team::getTeamAbility() const {
 }
 
 void Team::increasePoints(int pointsToAdd) {
-    points += points;
+    points += pointsToAdd;
 }
 
 int Team::getPoints() const {

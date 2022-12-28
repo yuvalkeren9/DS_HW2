@@ -37,7 +37,7 @@ public:
     void incNumOfGamesPlayed(int toSet);
 
 
-    void increaseNumberOfPlayers(int numOfPlayersAdded);
+    void increaseNumberOfPlayers(long long int numOfPlayersAdded);
 
     bool getIsActive() const;
     void setIsActive(bool condition);
