@@ -14,28 +14,38 @@ void teamByAbility::IncTeamAbility(int toInc) {
 }
 
 bool teamByAbility::operator>(const teamByAbility &other) const {
-    if(teamAbility == other.teamAbility)
-    {
-        if(teamId>other.teamId)
-            return true;
-        return false;
-    }
     if(teamAbility > other.teamAbility){
         return true;
     }
+    else if (teamAbility < other.teamAbility){
         return false;
+    }
+    else{  //abilities are equal
+        return (teamId > other.teamId) ;
+    }
 }
+
 bool teamByAbility::operator==(const teamByAbility &other) const {
-    if (teamAbility == other.teamAbility){
+    if (teamId == other.teamId){
         return true;
     }
     else{
         return false;
     }
 }
+
 bool teamByAbility::operator<(const teamByAbility &other) const {
-    return teamAbility < other.teamAbility;
+    if(teamAbility < other.teamAbility){
+        return true;
+    }
+    else if (teamAbility > other.teamAbility){
+        return false;
+    }
+    else{  //abilities are equal
+        return (teamId < other.teamId) ;
+    }
 }
+
 
 int teamByAbility::getId() {
     return teamId;

@@ -51,11 +51,11 @@ bool getPartialTest1(){
     output_t<permutation_t> p4 = worldCup.get_partial_spirit(4);
     output_t<permutation_t> p5 = worldCup.get_partial_spirit(5);
 
-    cout << "A player permut is:"; p1.ans().print(); cout <<endl;
-    cout << "B player permut is:"; p2.ans().print(); cout <<endl;
-    cout << "C player permut is:"; p3.ans().print(); cout <<endl;
-    cout << "D player permut is:"; p4.ans().print(); cout <<endl;
-    cout << "E player permut is:"; p5.ans().print(); cout <<endl;
+//    cout << "A player permut is:"; p1.ans().print(); cout <<endl;
+//    cout << "B player permut is:"; p2.ans().print(); cout <<endl;
+//    cout << "C player permut is:"; p3.ans().print(); cout <<endl;
+//    cout << "D player permut is:"; p4.ans().print(); cout <<endl;
+//    cout << "E player permut is:"; p5.ans().print(); cout <<endl;
 
 
 
@@ -199,24 +199,114 @@ bool addTeamTest1(){
     StatusType status6 = worldCup.add_team(253);
     StatusType status7 = worldCup.add_team(3);
     StatusType status100 = worldCup.add_team(3);
-
-
-
-
     if (status1 == StatusType::SUCCESS && status2 == StatusType::SUCCESS && status3 == StatusType::SUCCESS &&
         status4 == StatusType::SUCCESS && status5 == StatusType::SUCCESS && status6 == StatusType::SUCCESS &&
         status7 == StatusType::SUCCESS && status10 == StatusType::INVALID_INPUT && status11 == StatusType::INVALID_INPUT &&
         status12 == StatusType::INVALID_INPUT && status100 == StatusType::FAILURE && status101 == StatusType::FAILURE &&
         status102 == StatusType::FAILURE) {
-    return true;
+        return true;
     }
     return false;
 };
+
+bool removeTeamTest1(){
+
+    world_cup_t worldCup;
+    StatusType status1 = worldCup.remove_team(1);
+    StatusType status2 = worldCup.remove_team(2);
+    StatusType status3 = worldCup.remove_team(-1);
+    StatusType status4 = worldCup.remove_team(0);
+
+    if (status1 != StatusType::FAILURE || status2 != StatusType::FAILURE || status3 != StatusType::INVALID_INPUT || status4 != StatusType::INVALID_INPUT){
+        return false;
+    }
+
+    worldCup.add_team(1);
+    worldCup.add_team(500);
+    worldCup.add_team(50);
+    worldCup.add_team(5000);
+
+    StatusType status11 = worldCup.remove_team(1);
+    StatusType status12 = worldCup.remove_team(1);
+    StatusType status13 = worldCup.remove_team(-1);
+    StatusType status14 = worldCup.remove_team(50);
+
+    if (status11 != StatusType::SUCCESS || status12 != StatusType::FAILURE || status13 != StatusType::INVALID_INPUT || status14 != StatusType::SUCCESS){
+        return false;
+    }
+
+    worldCup.add_team(1997);
+    worldCup.remove_team(1997);
+    worldCup.add_team(1997);
+    worldCup.remove_team(1997);
+    worldCup.add_team(1997);
+    worldCup.remove_team(1997);
+    worldCup.add_team(1997);
+    StatusType status1997 = worldCup.remove_team(1997);
+    if (status1997 != StatusType::SUCCESS){
+        return false;
+    }
+
+    return true;
+}
+
+bool addPlayerTest1(){
+    world_cup_t worldCup;
+    worldCup.add_team(1);
+    worldCup.add_team(2);
+    worldCup.add_team(3);
+
+    int permut1[5] = {1,0,2,3,4};
+    int permut2[5] = {0,1,3,4,2};
+    int permut3[5] = {4,2,3,1,0};
+    int permut4[5] = {2,0,1,3,4};
+    int badPermut[5] = {2,3,0,1,69};
+
+    StatusType status1 = worldCup.add_player(1,1,permut1,0,0,0,true);
+    StatusType status2 = worldCup.add_player(1,1,permut1,0,0,0,true);
+    StatusType status3 = worldCup.add_player(2,5,permut1,0,0,0,true);
+    StatusType status4 = worldCup.add_player(2,2,permut1,0,0,0,true);
+
+    if (status1 != StatusType::SUCCESS || status2 != StatusType::FAILURE || status3 != StatusType::FAILURE || status4 != StatusType::SUCCESS){
+        return false;
+    }
+
+    StatusType status5 = worldCup.add_player(10,1,badPermut,0,0,0,true);
+    StatusType status6 = worldCup.add_player(10,-1,permut1,0,0,0,true);
+    StatusType status7 = worldCup.add_player(-89,3,permut1,0,0,0,true);
+    StatusType status8 = worldCup.add_player(0,2,permut1,0,0,0,true);
+    StatusType status9 = worldCup.add_player(10,3,permut1,-1,0,0,true);
+    StatusType status10 = worldCup.add_player(75,2,permut1,0,-1,0,true);
+    StatusType status11 = worldCup.add_player(10,2,permut1,0,0,-1,true);
+
+    if (status5 != StatusType::INVALID_INPUT || status6 != StatusType::INVALID_INPUT || status7 != StatusType::INVALID_INPUT ||
+            status8 != StatusType::INVALID_INPUT || status9 != StatusType::INVALID_INPUT || status10 != StatusType::SUCCESS ||
+            status11 != StatusType::INVALID_INPUT){
+        return false;
+    }
+
+    worldCup.remove_team(1);
+    StatusType status100 = worldCup.add_player(1,2,permut1,0,0,0,true);
+    StatusType status200 = worldCup.add_player(1997,1,permut1,0,0,0,true);
+
+    worldCup.add_team(1);
+    StatusType status300 = worldCup.add_player(1,2,permut1,0,0,0,true);
+    StatusType status400 = worldCup.add_player(1997,1,permut1,0,0,0,true);
+
+    if (status100 != StatusType::FAILURE || status200 != StatusType::FAILURE || status300 != StatusType::FAILURE || status400 != StatusType::SUCCESS){
+        return false;
+    }
+    return true;
+}
 
 int main(){
     if(!run_test(getNumOfPlayedGamesTest1, "getNumOfPlayedGamesTest1"))
         return 1;
     if(!run_test(addTeamTest1, "addTeamTest1"))
+        return 1;
+    if(!run_test(removeTeamTest1, "removeTeamTest1"))
+        return 1;
+    if(!run_test(addPlayerTest1, "addPlayerTest1"))
         return 1;
     if(!run_test(getPartialTest1, "getPartialTest1"))
         return 1;

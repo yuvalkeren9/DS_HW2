@@ -147,7 +147,7 @@ output_t<int> world_cup_t::play_match(int teamId1, int teamId2)
     }
     team1->incNumOfGamesPlayed(1);
     team2->incNumOfGamesPlayed(1);
-	return StatusType::SUCCESS;
+	return result;
 }
 
 output_t<int> world_cup_t::num_played_games_for_player(int playerId)
