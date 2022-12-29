@@ -67,7 +67,7 @@ public:
     }
 
 private:
-    static const int initialSize = 5;
+    static const int initialSize = 7;  //2^3 - 1 = 7, third mersenne number
     void expand();
     int hash(int playerId) const;
     void remap(playerStruct* oldArray, playerStruct* newArray);

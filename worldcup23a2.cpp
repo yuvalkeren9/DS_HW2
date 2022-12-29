@@ -78,7 +78,9 @@ StatusType world_cup_t::add_player(int playerId, int teamId,
     if (team == nullptr){
         return StatusType::FAILURE;
     }
-
+    if(playerId == 24){
+        int i =1;
+    }
     Player* temp = unionFind.findPlayer(playerId);
     if (temp != nullptr){
         return StatusType::FAILURE;

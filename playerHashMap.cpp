@@ -50,7 +50,9 @@ void playerHashMap::add(Node* node) {
 int playerHashMap::hash(int playerId) const {
     assert (arrayLength != numOfPlayers);
     int hashVal = hashFunction1(playerId, arrayLength);
-    int stepSize = hashFunction2(playerId, arrayLength);
+    int previousMersenneNumber = ((arrayLength+1)/2) - 1;
+    int stepSize = previousMersenneNumber;
+//    int stepSize = hashFunction2(playerId, previousMersenneNumber);
     while (array[hashVal].isEmpty != true && array[hashVal].node->getPlayerId() != playerId){
         hashVal = hashVal + stepSize;
         hashVal %= arrayLength;
@@ -60,9 +62,10 @@ int playerHashMap::hash(int playerId) const {
 
 void playerHashMap::expand() {
     playerStruct* temp = array;
+    int nextMersenneNumber = ((2*(arrayLength+1)) - 1);
     try {
-        array = new playerStruct[2*arrayLength];
-        arrayLength *=2;
+        array = new playerStruct[nextMersenneNumber];
+        arrayLength = nextMersenneNumber;
     }
     catch (std::bad_alloc& e){
         array = temp;
@@ -75,8 +78,8 @@ void playerHashMap::expand() {
 }
 
 void playerHashMap::remap(playerStruct *oldArray, playerStruct *newArray) {
-    int oldSize = arrayLength/2;
-    for (int i= 0; i < oldSize; ++i){
+    int previousMersenneNumber = ((arrayLength+1)/2) - 1;
+    for (int i= 0; i < previousMersenneNumber; ++i){
         int currentPlayerId = oldArray[i].node->getPlayerId();
         int indexToPlaceIn = hash(currentPlayerId);
         newArray[indexToPlaceIn].node= oldArray[i].node;
