@@ -51,6 +51,8 @@ public:
     void increasePoints(int pointsToAdd);
     int getPoints() const;
     void setTeamByAbilityPtr(teamByAbility* toSet);
+    void copyTeamStats(Team* other);
+    int getTeamId(); // for printing
 
     permutation_t getTeamTotalSpirit() const;
     teamByAbility* getTeamByAbility() const;

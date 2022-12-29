@@ -72,6 +72,10 @@ Team * playerUnionFind::findTeamRootNode(Player* player) {
 void playerUnionFind::playerUnion(Team* team1, Team* team2) {
     Node* team1Root = team1->getTeamRepresentative();
     Node* team2Root = team2->getTeamRepresentative();
+    if(team1Root== nullptr && team2Root != nullptr){//empty team buys nun empty team
+
+        team2Root->team=team1;
+    }
     if(team1Root->sizeOfTree >= team2Root->sizeOfTree){   //team1 is larger
         team1Root->sizeOfTree += team2Root->sizeOfTree;
         team2Root->parent = team1Root;
@@ -149,6 +153,7 @@ Player* playerUnionFind::findPlayer(int playerId) const {
     Node* node = playerArray[index].node;
     return node->player;
 }
+
 
 
 

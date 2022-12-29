@@ -35,3 +35,7 @@ int Player::getNumOfCards() const {
 void Player::incNumOfCards(int cardsToAdd) {
     cards +=cardsToAdd;
 }
+
+int Player::get_games_played() const {
+    return gamesPlayed;
+}

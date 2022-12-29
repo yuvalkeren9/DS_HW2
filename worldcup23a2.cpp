@@ -165,7 +165,7 @@ output_t<int> world_cup_t::num_played_games_for_player(int playerId)
     if(player == nullptr){
         return StatusType::FAILURE;
     }
-    return unionFind.getPlayerNumOfGamesPlayed(player);
+    return player->get_games_played() + unionFind.getPlayerNumOfGamesPlayed(player);
 }
 
 StatusType world_cup_t::add_player_cards(int playerId, int cards)
@@ -252,6 +252,23 @@ StatusType world_cup_t::buy_team(int teamId1, int teamId2)
     if (team1 == nullptr || team2 == nullptr){
         return  StatusType::FAILURE;
     }
+
+    //edge cases
+    if(team2->getNumOfPlayersInTeam()== 0) {//empty team was bought
+        remove_team(teamId2);
+        return StatusType::SUCCESS;
+    }
+    if(team1->getNumOfPlayersInTeam()== 0 )// empty team buys not empty team
+    {
+        team1->copyTeamStats(team2);  //Team1 get team 2 stats without id and without team ability
+        Node* team2Rep = team2->getTeamRepresentative();
+        team2Rep->team=team1;////now the representive of team2 points to team1 (why this accesses to private field is possible???)
+        updateTeamByAbilityTree(teamId1,team2->getTeamAbility());
+        remove_team(teamId2);
+        return StatusType::SUCCESS;
+
+    }
+
     unionFind.playerUnion(team1, team2);
 
     //updating team1 stats
@@ -285,6 +302,10 @@ Team *world_cup_t::searchTeamTree(int teamId) const {
     this->teamsByAbilityRankTree.Delete(team1);
     team1->IncTeamAbility(toInc);
     teamsByAbilityRankTree.insert(team1);
+}
+
+void world_cup_t::printAllPlayers() {
+    playerHashMap().printArray();
 }
 
 

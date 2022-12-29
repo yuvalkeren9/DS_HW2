@@ -32,6 +32,7 @@ public:
     void setNumberOfGamesTeamPlayedBeforeInit(long long int toSet) ;
 
     int getNumOfCards() const;
+    int get_games_played() const;
     void incNumOfCards(int cardsToAdd);
     void setTeam(Team* teamToSet);
 

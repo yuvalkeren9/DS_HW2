@@ -57,12 +57,12 @@ public:
     //functions for tests
     void printArray(){
         for (int i = 0; i < arrayLength; ++i) {
-            std::cout << "Hello! At index " << i << " we have the player: ";
+            //std::cout << "Hello! At index " << i << " we have the player: ";
             if (array[i].isEmpty) {
                 std::cout << "Empty!" << std::endl;
                 continue;
             }
-            std::cout << array[i].node->getPlayerId() << std::endl;
+            std::cout <<"player "<< array[i].node->getPlayerId() << "in team " << array[i].node->getTeam()->getTeamId()<< std::endl;
         }
     }
 

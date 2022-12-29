@@ -351,6 +351,7 @@ bool playMatchTest1(){
 }
 
 bool playMatchTest2(){
+
     world_cup_t worldCup;
     worldCup.add_team(1);
     worldCup.add_team(2);
@@ -398,33 +399,248 @@ bool playMatchTest2(){
 
 
     if (result6.ans() != 2 || result1.ans() != 3 || result2.ans() != 1 || result3.ans() != 0  || result4.ans() != 4 ||
-            result5.ans() != 1){
+        result5.ans() != 1){
         return false;
     }
 
     return true;
+
 }
 
+bool num_played_games_for_player_TEST2() {
+    world_cup_t worldCup;
+    worldCup.add_team(1);
+    worldCup.add_team(2);
+    worldCup.add_team(3);
+    worldCup.add_team(4);
+    worldCup.add_team(5);
+    worldCup.add_team(6);
+    worldCup.add_team(7);
+
+    int permut1[5] = {1, 0, 2, 3, 4};
+    int permut2[5] = {0, 1, 3, 4, 2};
+    int permut3[5] = {4, 2, 3, 1, 0};
+    int permut4[5] = {2, 0, 1, 3, 4};
+
+    permutation_t spirit1(permut1); //54
+    permutation_t spirit2(permut2); //52
+    permutation_t spirit3(permut3); //36
+    permutation_t spirit4(permut4); //52
+
+
+    worldCup.add_player(1, 1, permut1, 10, 1, 1, true);
+    worldCup.add_player(2, 2, permut2, 20, 2, 1, true);
+    //  player 1 - 10 games
+    //  player 2 - 20 games
+    //  player 3 - 0 games
+    //  player 4 - 0 games
+
+
+    output_t<int> result1 = worldCup.play_match(1, 2);  //player 1 - 11 games , player 2 - 21 games , player 3 - 0 games , player4 - 0 games
+    output_t<int> result2 = worldCup.play_match(2, 1);  // player 1 - 12 games , player 2 - 22 games,  player 3 - 0 games , player4 - 0 games
+    //  player 1 - 12 games
+    //  player 2 - 22 games
+    //  player 3 - 0 games
+    //  player 4 - 0 games
+
+    worldCup.add_player(3, 3, permut1, 10, 1, 1, true);
+    //  player 1 - 12 games ,
+    //  player 2 - 22 games
+    //  player3 - 10 games
+    //  player4 - 0 games
+
+    worldCup.play_match(1,3);
+    //  player 1 - 13 games
+    //  player 2 - 22 games
+    //  player3 - 11 games
+    //  player4 - 0 games
+
+    worldCup.add_player(4, 4, permut2, 20, 2, 1, true);
+    //  player 1 - 13 games
+    //  player 2 - 22 games
+    //  player3 - 11 games
+    //  player4 - 20 games
+
+    worldCup.buy_team(3,1);
+    //  player 1 - 13 games
+    //  player 2 - 22 games
+    //  player3 - 11 games
+    //  player4 - 20 games
+
+    worldCup.play_match(3,2);
+    //  player 1 - 14 games
+    //  player 2 - 23 games
+    //  player3 - 12 games
+    //  player4 - 20 games
+
+
+
+
+    int  gamesOffPlayer1 = worldCup.num_played_games_for_player(1).ans();   //  player 1 - 14 games
+    int gamesOffPlayer2 = worldCup.num_played_games_for_player(2).ans();    //  player 2 - 23 games
+    int gamesOffPlayer3 = worldCup.num_played_games_for_player(3).ans();    //  player3 - 12 games
+    int  gamesOffPlayer4 = worldCup.num_played_games_for_player(4).ans();   //  player4 - 20 games
+
+
+    if (gamesOffPlayer1 != 14 || gamesOffPlayer2 != 23 || gamesOffPlayer3 != 12 ||
+        gamesOffPlayer4!= 20) {
+        return false;
+    }
+    return true;
+}
+bool num_played_games_for_player_TEST3() {
+    world_cup_t worldCup;
+    worldCup.add_team(1);
+    worldCup.add_team(2);
+    worldCup.add_team(3);
+    worldCup.add_team(4);
+    worldCup.add_team(5);
+    worldCup.add_team(6);
+    worldCup.add_team(7);
+
+    output_t<int> result1 =  worldCup.buy_team(1,2);// expected success (empty team buys empty team)
+    output_t<int> result2 =  worldCup.play_match(1,2); // expected failure
+
+    int permut1[5] = {1, 0, 2, 3, 4};
+    int permut2[5] = {0, 1, 3, 4, 2};
+    int permut3[5] = {4, 2, 3, 1, 0};
+    int permut4[5] = {2, 0, 1, 3, 4};
+    int permut5[5] = {2, 0, 1, 3, 4};
+
+    permutation_t spirit1(permut1); //54
+    permutation_t spirit2(permut2); //52
+    permutation_t spirit3(permut3); //36
+    permutation_t spirit4(permut4); //52
+    permutation_t spirit5(permut5); //52
+
+
+    output_t<int> result3 = worldCup.add_player(1, 1, permut1, 10, 1, 1, true);// expected success
+    output_t<int> result4 = worldCup.add_player(2, 2, permut2, 20, 2, 1, true);// expected failure
+
+    //  player 1 - 10 games
+
+
+    output_t<int> result5 = worldCup.add_player(2, 2, permut1, 10, 1, 1, true);// expected  failure
+   worldCup.add_player(2, 3, permut1, 10, 1, 1, true);
+   worldCup.add_player(3, 3, permut1, 10, 1, 1, true);
+
+    //  player 1 - 10 games (team1)
+    //  player 2 - 10 games (team3)
+    //  player 3 - 10 games (team3)
+
+    worldCup.play_match(3, 1);
+    //  player 1 - 11 games (team1)
+    //  player 2 - 11 games (team3)
+    //  player 3 - 11 games (team3)
+
+    worldCup.add_player(4, 3, permut1, 10, 1, 1, true);
+    //  player 1 - 11 games (team1)
+    //  player 2 - 11 games (team3)
+    //  player3 - 11 games (team3)
+    //  player4 - 10 games (team3)
+
+    worldCup.play_match(1,3);
+    //  player 1 - 12 games (team1)
+    //  player 2 - 12 games (team3)
+    //  player3 - 12 games (team3)
+    //  player4 - 11 games (team3)
+
+    output_t<int> result6 = worldCup.buy_team(4,3); // expected success (empty team buys nun empty team)
+    //  player 1 - 12 games (team1)
+    //  player 2 - 12 games (team4)
+    //  player3 - 12 games (team4)
+    //  player4 - 11 games (team4)
+
+    worldCup.play_match(4,1);
+    //  player 1 - 13 games (team1)
+    //  player 2 - 13 games (team4)
+    //  player3 - 13 games (team4)
+    //  player4 - 12 games (team4)
+    worldCup.buy_team(1,4);
+    //  player 1 - 13 games (team1)
+    //  player 2 - 13 games (team1)
+    //  player3 - 13 games (team1)
+    //  player4 - 12 games (team1)
+
+    worldCup.buy_team(4,5);
+    output_t<int> result7 =  worldCup.add_player(5, 4, permut5, 10, 1, 1, true);// expected  failure
+    worldCup.add_player(5, 1, permut5, 10, 1, 1, true);
+    //  player 1 - 13 games (team1)
+    //  player 2 - 13 games (team1)
+    //  player3 - 13 games (team1)
+    //  player4 - 12 games (team1)
+    //  player5 - 10 games (team1)
+
+    int  gamesOffPlayer1 = worldCup.num_played_games_for_player(1).ans();   //  player 1 - 13 games
+    int gamesOffPlayer2 = worldCup.num_played_games_for_player(2).ans();    //  player 2 - 13 games
+    int gamesOffPlayer3 = worldCup.num_played_games_for_player(3).ans();    //  player3 - 13 games
+    int  gamesOffPlayer4 = worldCup.num_played_games_for_player(4).ans();   //  player4 - 12 games
+    int  gamesOffPlayer5 = worldCup.num_played_games_for_player(5).ans();   //  player5 - 10 games
+
+    worldCup.printAllPlayers();
+
+
+
+    if (gamesOffPlayer1 != 13 || gamesOffPlayer2 != 13 || gamesOffPlayer3 != 13 || gamesOffPlayer4 != 12 ||
+            gamesOffPlayer5!= 10
+            || result1.status() !=  StatusType::SUCCESS ||
+            result2.status() !=  StatusType::FAILURE || result3.status() !=  StatusType::SUCCESS ||  result4.status() !=  StatusType::FAILURE
+            ||  result5.status() !=  StatusType::FAILURE || result6.status() !=  StatusType::SUCCESS ||  result7.status() !=  StatusType::FAILURE)
+    {
+        return false;
+    }
+    return true;
+}
+
+//bool remove_team_test1(){
+//    world_cup_t worldCup;
+//    worldCup.add_team(0);
+//    worldCup.add_team(5);
+//    worldCup.add_team(6);
+//    worldCup.add_team(-3);
+//    worldCup.add_team(54);
+//    worldCup.add_team(54);
+//    StatusType status101 = worldCup.add_team(5);
+//    StatusType status4 = worldCup.add_team(52);
+//    StatusType status11 = worldCup.add_team(-7);
+//    StatusType status5 = worldCup.add_team(580);
+//    StatusType status6 = worldCup.add_team(253);
+//    StatusType status7 = worldCup.add_team(3);
+//    StatusType status100 = worldCup.add_team(3);
+//
+//
+//
+//
+//    if (status1 == StatusType::SUCCESS && status2 == StatusType::SUCCESS && status3 == StatusType::SUCCESS &&
+//        status4 == StatusType::SUCCESS && status5 == StatusType::SUCCESS && status6 == StatusType::SUCCESS &&
+//        status7 == StatusType::SUCCESS && status10 == StatusType::INVALID_INPUT && status11 == StatusType::INVALID_INPUT &&
+//        status12 == StatusType::INVALID_INPUT && status100 == StatusType::FAILURE && status101 == StatusType::FAILURE &&
+//        status102 == StatusType::FAILURE) {
+//        return true;
+//    }
+//    return false;
+//}
+
 int main(){
-    if(!run_test(getNumOfPlayedGamesTest1, "getNumOfPlayedGamesTest1"))
-        return 1;
-    if(!run_test(addTeamTest1, "addTeamTest1"))
-        return 1;
-    if(!run_test(removeTeamTest1, "removeTeamTest1"))
-        return 1;
-    if(!run_test(addPlayerTest1, "addPlayerTest1"))
-        return 1;
-    if(!run_test(playMatchTest1, "playMatchTest1"))
-        return 1;
-    if(!run_test(playMatchTest2, "playMatchTest2"))
-        return 1;
-
-
-    if(!run_test(getPartialTest1, "getPartialTest1"))
+//    if(!run_test(getNumOfPlayedGamesTest1, "getNumOfPlayedGamesTest1"))
+//        return 1;
+//    if(!run_test(addTeamTest1, "addTeamTest1"))
+//        return 1;
+//    if(!run_test(removeTeamTest1, "removeTeamTest1"))
+//        return 1;
+//    if(!run_test(addPlayerTest1, "addPlayerTest1"))
+//        return 1;
+//    if(!run_test(playMatchTest1, "playMatchTest1"))
+//        return 1;
+//    if(!run_test(playMatchTest2, "playMatchTest2"))
+//        return 1;
+//    if(!run_test(getPartialTest1, "getPartialTest1"))
+//        return 1;
+//    if(!run_test(num_played_games_for_player_TEST2, "num_played_games_for_player_TEST2"))
+//        return 1;
+    if(!run_test(num_played_games_for_player_TEST3, "num_played_games_for_player_TEST3"))
         return 1;
     return 0;
-
-
 
 //    getNumOfPlayedGamesTest1();
 //    getRankOfTeamInTree();
