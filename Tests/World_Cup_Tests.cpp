@@ -5,6 +5,7 @@
 #include "../worldcup23a2.h"
 #include <iostream>
 #include <functional>
+#include <random>
 
 using namespace std;
 
@@ -407,6 +408,64 @@ bool playMatchTest2(){
 
 }
 
+bool playMatchTest3(){
+
+    world_cup_t worldCup;
+
+    for(int i =0; i<= 20; ++i){
+        worldCup.add_team(i);
+    }
+    int permut1[5] = {1,0,2,3,4};
+    int permut2[5] = {0,1,3,4,2};
+    int permut3[5] = {4,2,3,1,0};
+    int permut4[5] = {2,0,1,3,4};
+
+
+    permutation_t spirit1(permut1); //54
+    permutation_t spirit2(permut2); //52
+    permutation_t spirit3(permut3); //36
+    permutation_t spirit4(permut4); //52
+
+    for (int i= 1; i <=20; ++i){
+        worldCup.add_player(i,i,permut1,0,i,0,true);
+    }
+
+    for(int i = 1; i <= 19; i+=2){
+        worldCup.play_match(i,i+1);
+    }
+    for (int i=1; i <=19; i+=2){
+        if(worldCup.get_team_points(i).ans() != 0){
+            return false;
+        }
+        if(worldCup.get_team_points(i+1).ans() != 3){
+            return false;
+        }
+    }
+
+    worldCup.remove_team(5);
+    worldCup.remove_team(10);
+    output_t<int> result1 = worldCup.play_match(1,5);
+    output_t<int> result2 = worldCup.play_match(10,2);
+    if(result1.status() != StatusType::FAILURE || result2.status() != StatusType::FAILURE ){
+        return false;
+    }
+
+    worldCup.buy_team(1,20);
+    output_t<int> result3 = worldCup.play_match(1,6); //1 wins
+
+    worldCup.buy_team(2,3);
+    worldCup.buy_team(2,19);
+    worldCup.buy_team(2,18);
+    output_t<int> result4 = worldCup.play_match(1,2); //2 wins
+
+    if (result3.ans() != 1 || result4.ans() != 3){
+        return false;
+    }
+
+
+    return true;
+}
+
 bool num_played_games_for_player_TEST2() {
     world_cup_t worldCup;
     worldCup.add_team(1);
@@ -519,10 +578,9 @@ bool num_played_games_for_player_TEST3() {
 
     //  player 1 - 10 games
 
-
     output_t<int> result5 = worldCup.add_player(2, 2, permut1, 10, 1, 1, true);// expected  failure
-   worldCup.add_player(2, 3, permut1, 10, 1, 1, true);
-   worldCup.add_player(3, 3, permut1, 10, 1, 1, true);
+    worldCup.add_player(2, 3, permut1, 10, 1, 1, true);
+    worldCup.add_player(3, 3, permut1, 10, 1, 1, true);
 
     //  player 1 - 10 games (team1)
     //  player 2 - 10 games (team3)
@@ -577,10 +635,6 @@ bool num_played_games_for_player_TEST3() {
     int  gamesOffPlayer4 = worldCup.num_played_games_for_player(4).ans();   //  player4 - 12 games
     int  gamesOffPlayer5 = worldCup.num_played_games_for_player(5).ans();   //  player5 - 10 games
 
-    worldCup.printAllPlayers();
-
-
-
     if (gamesOffPlayer1 != 13 || gamesOffPlayer2 != 13 || gamesOffPlayer3 != 13 || gamesOffPlayer4 != 12 ||
             gamesOffPlayer5!= 10
             || result1.status() !=  StatusType::SUCCESS ||
@@ -621,62 +675,117 @@ bool num_played_games_for_player_TEST3() {
 //    return false;
 //}
 
-int main(){
-//    if(!run_test(getNumOfPlayedGamesTest1, "getNumOfPlayedGamesTest1"))
-//        return 1;
-//    if(!run_test(addTeamTest1, "addTeamTest1"))
-//        return 1;
-//    if(!run_test(removeTeamTest1, "removeTeamTest1"))
-//        return 1;
-//    if(!run_test(addPlayerTest1, "addPlayerTest1"))
-//        return 1;
-//    if(!run_test(playMatchTest1, "playMatchTest1"))
-//        return 1;
-//    if(!run_test(playMatchTest2, "playMatchTest2"))
-//        return 1;
-//    if(!run_test(getPartialTest1, "getPartialTest1"))
-//        return 1;
-//    if(!run_test(num_played_games_for_player_TEST2, "num_played_games_for_player_TEST2"))
-//        return 1;
-    if(!run_test(num_played_games_for_player_TEST3, "num_played_games_for_player_TEST3"))
+
+bool addCardsTests1(){
+
+    world_cup_t worldCup;
+    worldCup.add_team(1);
+    worldCup.add_team(2);
+    worldCup.add_team(3);
+    worldCup.add_team(4);
+    worldCup.add_team(5);
+    worldCup.add_team(6);
+    worldCup.add_team(7);
+
+    int permut1[5] = {1,0,2,3,4};
+    int permut2[5] = {0,1,3,4,2};
+    int permut3[5] = {4,2,3,1,0};
+    int permut4[5] = {2,0,1,3,4};
+
+    permutation_t spirit1(permut1); //54
+    permutation_t spirit2(permut2); //52
+    permutation_t spirit3(permut3); //36
+    permutation_t spirit4(permut4); //52
+
+
+    worldCup.add_player(1,1,spirit1,5,5,5,true);
+    worldCup.add_player(2,1,spirit1,5,5,0,true);
+    StatusType status1 = worldCup.add_player_cards(1,5);
+    StatusType status2 = worldCup.add_player_cards(0,5);
+    StatusType status3 = worldCup.add_player_cards(-1,5);
+    StatusType status4 = worldCup.add_player_cards(-1,-1);
+    StatusType status5 = worldCup.add_player_cards(1,0);
+    StatusType status6 = worldCup.add_player_cards(5,2);
+
+    if (status1 !=StatusType::SUCCESS || status2 != StatusType::INVALID_INPUT || status3 != StatusType::INVALID_INPUT ||
+            status4 != StatusType::INVALID_INPUT || status5 != StatusType::SUCCESS ||
+            status6 != StatusType::FAILURE ){
+        return false;
+    }
+    return true;
+}
+
+bool getCardsTests1(){
+
+    world_cup_t worldCup;
+    worldCup.add_team(1);
+    worldCup.add_team(2);
+    worldCup.add_team(3);
+    worldCup.add_team(4);
+    worldCup.add_team(5);
+    worldCup.add_team(6);
+    worldCup.add_team(7);
+
+    int permut1[5] = {1,0,2,3,4};
+    int permut2[5] = {0,1,3,4,2};
+    int permut3[5] = {4,2,3,1,0};
+    int permut4[5] = {2,0,1,3,4};
+
+    permutation_t spirit1(permut1); //54
+    permutation_t spirit2(permut2); //52
+    permutation_t spirit3(permut3); //36
+    permutation_t spirit4(permut4); //52
+
+
+    worldCup.add_player(1,1,spirit1,5,5,5,true);
+    worldCup.add_player(2,1,spirit1,5,5,0,true);
+    worldCup.add_player_cards(1,5);
+    worldCup.add_player_cards(5,2);
+    worldCup.add_player_cards(2,80);
+    worldCup.add_player(3,1,permut1,0,0,1997,true);
+
+    output_t<int> status1 = worldCup.get_player_cards(1);
+    output_t<int> status2 = worldCup.get_player_cards(2);
+    output_t<int> status3 = worldCup.get_player_cards(3);
+    output_t<int> status4 = worldCup.get_player_cards(4);
+    output_t<int> status5 = worldCup.get_player_cards(-4);
+    output_t<int> status6 = worldCup.get_player_cards(0);
+    worldCup.remove_team(1);
+    output_t<int> status7 = worldCup.get_player_cards(1);
+
+
+    if (status1.ans() != 10 || status2.ans() != 80 || status3.ans() != 1997 ||
+        status4.status() != StatusType::FAILURE || status5.status() != StatusType::INVALID_INPUT ||
+        status6.status() != StatusType::INVALID_INPUT || status7.ans() != 10 ){
+        return false;
+    }
+    return true;
+}
+int main() {
+    if (!run_test(getNumOfPlayedGamesTest1, "getNumOfPlayedGamesTest1"))
+        return 1;
+    if (!run_test(addTeamTest1, "addTeamTest1"))
+        return 1;
+    if (!run_test(removeTeamTest1, "removeTeamTest1"))
+        return 1;
+    if (!run_test(addPlayerTest1, "addPlayerTest1"))
+        return 1;
+    if (!run_test(playMatchTest1, "playMatchTest1"))
+        return 1;
+    if (!run_test(playMatchTest2, "playMatchTest2"))
+        return 1;
+    if (!run_test(playMatchTest3, "playMatchTest3"))
+        return 1;
+    if (!run_test(getPartialTest1, "getPartialTest1"))
+        return 1;
+    if (!run_test(num_played_games_for_player_TEST2, "num_played_games_for_player_TEST2"))
+        return 1;
+    if (!run_test(num_played_games_for_player_TEST3, "num_played_games_for_player_TEST3"))
+        return 1;
+    if (!run_test(addCardsTests1, "addCardsTests1"))
+        return 1;
+    if (!run_test(getCardsTests1, "getCardsTests1"))
         return 1;
     return 0;
-
-//    getNumOfPlayedGamesTest1();
-//    getRankOfTeamInTree();
-//    getPartialTest1();
-//
-//
-//
-//    world_cup_t worldCup;
-//
-//    worldCup.add_team(1);
-//    worldCup.add_team(2);
-//    worldCup.add_team(3);
-//
-//    int permut1[5] = {1,0,2,3,4};   //(0,1)
-//    int permut2[5] = {0,1,2,4,3};   //(3,4)
-//    int permut3[5] = {0,1,3,4,2};   //(3,2,4)
-//
-//    worldCup.add_player(1, 1, permut1 ,0, 0, 0, true);
-//    worldCup.add_player(2, 2, permut2 ,0, 0, 0, true);
-//    worldCup.add_player(3, 3, permut3 ,0, 0, 0, true);
-//
-//
-//    worldCup.buy_team(1,2);
-//    worldCup.buy_team(1,3);
-//
-//    output_t<permutation_t> p1 = worldCup.get_partial_spirit(1);
-//    output_t<permutation_t> p2 = worldCup.get_partial_spirit(2);
-//    output_t<permutation_t> p3 = worldCup.get_partial_spirit(3);
-//
-//    cout << "First player permut is:"; p1.ans().print(); cout <<endl;
-//    cout << "second player permut is:"; p2.ans().print(); cout <<endl;
-//    cout << "third player permut is:"; p3.ans().print(); cout <<endl;
-//
-//
-//
-
-
 }
 

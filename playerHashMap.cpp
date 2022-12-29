@@ -80,8 +80,7 @@ void playerHashMap::remap(playerStruct *oldArray, playerStruct *newArray) {
         int currentPlayerId = oldArray[i].node->getPlayerId();
         int indexToPlaceIn = hash(currentPlayerId);
         newArray[indexToPlaceIn].node= oldArray[i].node;
-        newArray[indexToPlaceIn].isEmpty =false;
-        cout << "!!!!!'" << endl;
+        newArray[indexToPlaceIn].isEmpty = false;
     }
 }
 

@@ -27,6 +27,8 @@ public :
     //functions for testing
     permutation_t getPlayerRank(Player* player);
 
+    void print();  //TODO: remove
+
 
 
 private:

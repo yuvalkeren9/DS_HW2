@@ -171,7 +171,7 @@ output_t<int> world_cup_t::num_played_games_for_player(int playerId)
 StatusType world_cup_t::add_player_cards(int playerId, int cards)
 {
     //input check
-    if (playerId <= 0 || cards <=0){
+    if (playerId <= 0 || cards <0){
         return StatusType::INVALID_INPUT;
     }
 
@@ -297,7 +297,7 @@ Team *world_cup_t::searchTeamTree(int teamId) const {
 }
 
  void world_cup_t::updateTeamByAbilityTree(int teamId, int toInc)  {
-     Team *tempTeam = searchTeamTree(teamId);
+    Team *tempTeam = searchTeamTree(teamId);
     teamByAbility* team1 =tempTeam->getTeamByAbility();
     this->teamsByAbilityRankTree.Delete(team1);
     team1->IncTeamAbility(toInc);
@@ -305,7 +305,7 @@ Team *world_cup_t::searchTeamTree(int teamId) const {
 }
 
 void world_cup_t::printAllPlayers() {
-    playerHashMap().printArray();
+    unionFind.print();
 }
 
 

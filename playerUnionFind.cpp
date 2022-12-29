@@ -154,6 +154,10 @@ Player* playerUnionFind::findPlayer(int playerId) const {
     return node->player;
 }
 
+void playerUnionFind::print() {
+    playerArray.printArray();
+}
+
 
 
 
