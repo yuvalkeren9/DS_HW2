@@ -629,6 +629,7 @@ bool num_played_games_for_player_TEST3() {
     //  player4 - 12 games (team1)
     //  player5 - 10 games (team1)
 
+    //worldCup.printAllPlayers();
     int  gamesOffPlayer1 = worldCup.num_played_games_for_player(1).ans();   //  player 1 - 13 games
     int gamesOffPlayer2 = worldCup.num_played_games_for_player(2).ans();    //  player 2 - 13 games
     int gamesOffPlayer3 = worldCup.num_played_games_for_player(3).ans();    //  player3 - 13 games
@@ -645,7 +646,255 @@ bool num_played_games_for_player_TEST3() {
     }
     return true;
 }
+bool buy_team_TEST1() {
+    world_cup_t worldCup;
+    worldCup.add_team(1);
+    worldCup.add_team(2);
+    worldCup.add_team(3);
+    worldCup.add_team(4);
+    worldCup.add_team(5);
+    worldCup.add_team(6);
+    worldCup.add_team(7);
 
+    output_t<int> result1 =  worldCup.buy_team(1,2);// expected success (empty team buys empty team)
+
+    int permut1[5] = {1, 0, 2, 3, 4};
+    int permut2[5] = {0, 1, 3, 4, 2};
+    int permut3[5] = {4, 2, 3, 1, 0};
+    int permut4[5] = {2, 0, 1, 3, 4};
+    int permut5[5] = {2, 0, 1, 3, 4};
+
+    permutation_t spirit1(permut1); //54
+    permutation_t spirit2(permut2); //52
+    permutation_t spirit3(permut3); //36
+    permutation_t spirit4(permut4); //52
+    permutation_t spirit5(permut5); //52
+
+
+    worldCup.add_player(1, 1, permut1, 10, 1, 1, true);
+    worldCup.add_player(2, 1, permut2, 20, 2, 1, true);
+    output_t<int> result2 =  worldCup.buy_team(1,2);// expected  failure (tries to buy team that was bought already)
+    output_t<int> result3 =  worldCup.buy_team(2,1);// expected  failure (team that was already bought tries to buy a team)
+    output_t<int> result4 =  worldCup.buy_team(3,1);// expected  success (empty team buys nun empty team)
+    output_t<int> result5 =  worldCup.buy_team(3,5);// expected  success (nun empty team buys an empty team)
+    output_t<int> result6 = worldCup.add_player(3, 4, permut1, 10, 1, 1, true);// expected  success
+    output_t<int> result7 =  worldCup.buy_team(3,4);// expected  success (nun empty buys nun empty)
+   // worldCup.printAllPlayers();
+
+    if (result1.status() !=  StatusType::SUCCESS ||
+        result2.status() !=  StatusType::FAILURE || result3.status() !=  StatusType::FAILURE ||  result4.status() !=  StatusType::SUCCESS
+        ||  result5.status() !=  StatusType::SUCCESS || result6.status() !=  StatusType::SUCCESS ||  result7.status() !=  StatusType::SUCCESS)
+    {
+        return false;
+    }
+    return true;
+}
+bool buy_team_TEST2() {
+    world_cup_t worldCup;
+    worldCup.add_team(1);
+    worldCup.add_team(2);
+    worldCup.add_team(3);
+    worldCup.add_team(4);
+    worldCup.add_team(5);
+    worldCup.add_team(6);
+    worldCup.add_team(7);
+
+    output_t<int> result1 =  worldCup.buy_team(1,2);// expected success (empty team buys empty team)
+    output_t<int> result2 = worldCup.add_team(2);// expected success
+    int permut1[5] = {1, 0, 2, 3, 4};
+    int permut2[5] = {0, 1, 3, 4, 2};
+    int permut3[5] = {4, 2, 3, 1, 0};
+    int permut4[5] = {2, 0, 1, 3, 4};
+    int permut5[5] = {2, 0, 1, 3, 4};
+
+    permutation_t spirit1(permut1); //54
+    permutation_t spirit2(permut2); //52
+    permutation_t spirit3(permut3); //36
+    permutation_t spirit4(permut4); //52
+    permutation_t spirit5(permut5); //52
+
+
+    worldCup.add_player(1, 1, permut1, 10, 1, 1, true);
+    worldCup.add_player(2, 2, permut2, 20, 2, 1, true);
+    output_t<int> result3 =  worldCup.buy_team(2,1);// expected success
+
+     worldCup.printAllPlayers();
+
+    if (result1.status() !=  StatusType::SUCCESS ||result2.status() !=  StatusType::SUCCESS || result3.status() !=  StatusType::SUCCESS)
+    {
+        return false;
+    }
+    return true;
+}
+bool get_ith_pointless_ability1_TEST1() {
+    world_cup_t worldCup;
+    worldCup.add_team(1);
+    worldCup.add_team(2);
+    worldCup.add_team(3);
+    worldCup.add_team(4);
+    worldCup.add_team(5);
+    worldCup.add_team(6);
+    worldCup.add_team(7);
+
+    output_t<int> result1 = worldCup.get_ith_pointless_ability(0);
+    output_t<int> result2 = worldCup.get_ith_pointless_ability(1);
+    output_t<int> result3 = worldCup.get_ith_pointless_ability(2);
+    output_t<int> result4 = worldCup.get_ith_pointless_ability(3);
+    output_t<int> result5 = worldCup.get_ith_pointless_ability(4);
+    output_t<int> result6 = worldCup.get_ith_pointless_ability(5);
+    output_t<int> result7 = worldCup.get_ith_pointless_ability(6);
+
+    if (result1.ans()!=1 || result2.ans()!=2  || result3.ans()!=3 || result4.ans()!=4 || result5.ans()!=5|| result6.ans()!=6 || result7.ans()!=7 )
+    {
+        return false;
+    }
+
+    int permut1[5] = {1, 0, 2, 3, 4};
+    int permut2[5] = {0, 1, 3, 4, 2};
+    int permut3[5] = {4, 2, 3, 1, 0};
+    int permut4[5] = {2, 0, 1, 3, 4};
+    int permut5[5] = {2, 0, 1, 3, 4};
+
+    permutation_t spirit1(permut1); //54
+    permutation_t spirit2(permut2); //52
+    permutation_t spirit3(permut3); //36
+    permutation_t spirit4(permut4); //52
+    permutation_t spirit5(permut5); //52
+
+    worldCup.add_player(1, 1, permut1, 10, 1, 1, true);
+    worldCup.add_player(2, 2, permut2, 20, 1, 1, true);
+    worldCup.add_player(3, 3, permut1, 10, 1, 1, true);
+    worldCup.add_player(4, 4, permut2, 20, 1, 1, true);
+    worldCup.add_player(5, 5, permut1, 10, 1, 1, true);
+    worldCup.add_player(6, 6, permut2, 20, 1, 1, true);
+    worldCup.add_player(7, 7, permut1, 10, 1, 1, true);
+
+    output_t<int> result11 = worldCup.get_ith_pointless_ability(0);
+    output_t<int> result12 = worldCup.get_ith_pointless_ability(1);
+    output_t<int> result13 = worldCup.get_ith_pointless_ability(2);
+    output_t<int> result14 = worldCup.get_ith_pointless_ability(3);
+    output_t<int> result15 = worldCup.get_ith_pointless_ability(4);
+    output_t<int> result16 = worldCup.get_ith_pointless_ability(5);
+    output_t<int> result17 = worldCup.get_ith_pointless_ability(6);
+
+    if (result11.ans()!=1 || result12.ans()!=2  || result13.ans()!=3 || result14.ans()!=4 || result15.ans()!=5|| result16.ans()!=6 || result17.ans()!=7 )
+    {
+        return false;
+    }
+    worldCup.add_player(11, 1, permut1, 10, 70, 1, true);
+    worldCup.add_player(12, 2, permut2, 20, 60, 1, true);
+    worldCup.add_player(13, 3, permut1, 10, 50, 1, true);
+    worldCup.add_player(14, 4, permut2, 20, 40, 1, true);
+    worldCup.add_player(15, 5, permut1, 10, 30, 1, true);
+    worldCup.add_player(16, 6, permut2, 20, 20, 1, true);
+    worldCup.add_player(17, 7, permut1, 10, 10, 1, true);
+
+    output_t<int> result21 = worldCup.get_ith_pointless_ability(0);
+    output_t<int> result22 = worldCup.get_ith_pointless_ability(1);
+    output_t<int> result23 = worldCup.get_ith_pointless_ability(2);
+    output_t<int> result24 = worldCup.get_ith_pointless_ability(3);
+    output_t<int> result25 = worldCup.get_ith_pointless_ability(4);
+    output_t<int> result26 = worldCup.get_ith_pointless_ability(5);
+    output_t<int> result27 = worldCup.get_ith_pointless_ability(6);
+
+    if (result27.ans()!=1 || result26.ans()!=2  || result25.ans()!=3 || result24.ans()!=4 || result23.ans()!=5|| result22.ans()!=6 || result21.ans()!=7 )
+    {
+        return false;
+    }
+    return true;
+}
+
+bool get_ith_pointless_ability1_TEST2() {
+    world_cup_t worldCup;
+    worldCup.add_team(1);
+    worldCup.add_team(2);
+    worldCup.add_team(3);
+    worldCup.add_team(4);
+    worldCup.add_team(5);
+    worldCup.add_team(6);
+    worldCup.add_team(7);
+
+    output_t<int> result1 = worldCup.get_ith_pointless_ability(0);
+    output_t<int> result2 = worldCup.get_ith_pointless_ability(1);
+    output_t<int> result3 = worldCup.get_ith_pointless_ability(2);
+    output_t<int> result4 = worldCup.get_ith_pointless_ability(3);
+    output_t<int> result5 = worldCup.get_ith_pointless_ability(4);
+    output_t<int> result6 = worldCup.get_ith_pointless_ability(5);
+    output_t<int> result7 = worldCup.get_ith_pointless_ability(6);
+
+    if (result1.ans()!=1 || result2.ans()!=2  || result3.ans()!=3 || result4.ans()!=4 || result5.ans()!=5|| result6.ans()!=6 || result7.ans()!=7 )
+    {
+        return false;
+    }
+
+    int permut1[5] = {1, 0, 2, 3, 4};
+    int permut2[5] = {0, 1, 3, 4, 2};
+    int permut3[5] = {4, 2, 3, 1, 0};
+    int permut4[5] = {2, 0, 1, 3, 4};
+    int permut5[5] = {2, 0, 1, 3, 4};
+
+    permutation_t spirit1(permut1); //54
+    permutation_t spirit2(permut2); //52
+    permutation_t spirit3(permut3); //36
+    permutation_t spirit4(permut4); //52
+    permutation_t spirit5(permut5); //52
+
+    worldCup.add_player(1, 1, permut1, 10, 0, 1, true);
+    worldCup.add_player(2, 2, permut2, 20, 0, 1, true);
+    worldCup.add_player(3, 3, permut1, 10, 0, 1, true);
+    worldCup.add_player(4, 4, permut2, 20, 0, 1, true);
+    worldCup.add_player(5, 5, permut1, 10, 0, 1, true);
+    worldCup.add_player(6, 6, permut2, 20, 0, 1, true);
+    worldCup.add_player(7, 7, permut1, 10, 0, 1, true);
+
+    output_t<int> result11 = worldCup.get_ith_pointless_ability(0);
+    output_t<int> result12 = worldCup.get_ith_pointless_ability(1);
+    output_t<int> result13 = worldCup.get_ith_pointless_ability(2);
+    output_t<int> result14 = worldCup.get_ith_pointless_ability(3);
+    output_t<int> result15 = worldCup.get_ith_pointless_ability(4);
+    output_t<int> result16 = worldCup.get_ith_pointless_ability(5);
+    output_t<int> result17 = worldCup.get_ith_pointless_ability(6);
+
+    if (result11.ans()!=1 || result12.ans()!=2  || result13.ans()!=3 || result14.ans()!=4 || result15.ans()!=5|| result16.ans()!=6 || result17.ans()!=7 )
+    {
+        return false;
+    }
+    worldCup.add_player(11, 1, permut1, 10, 70, 1, true);
+    worldCup.add_player(12, 2, permut2, 20, 60, 1, true);
+    worldCup.add_player(13, 3, permut1, 10, 50, 1, true);
+    worldCup.add_player(14, 4, permut2, 20, 40, 1, true);
+    worldCup.add_player(15, 5, permut1, 10, 30, 1, true);
+    worldCup.add_player(16, 6, permut2, 20, 20, 1, true);
+    worldCup.add_player(17, 7, permut1, 10, 10, 1, true);
+
+    output_t<int> result21 = worldCup.get_ith_pointless_ability(0);
+    output_t<int> result22 = worldCup.get_ith_pointless_ability(1);
+    output_t<int> result23 = worldCup.get_ith_pointless_ability(2);
+    output_t<int> result24 = worldCup.get_ith_pointless_ability(3);
+    output_t<int> result25 = worldCup.get_ith_pointless_ability(4);
+    output_t<int> result26 = worldCup.get_ith_pointless_ability(5);
+    output_t<int> result27 = worldCup.get_ith_pointless_ability(6);
+
+    if (result27.ans()!=1 || result26.ans()!=2  || result25.ans()!=3 || result24.ans()!=4 || result23.ans()!=5|| result22.ans()!=6 || result21.ans()!=7 )
+    {
+        return false;
+    }
+    worldCup.buy_team(4,1);//team 4 abillity now is : 110
+    worldCup.buy_team(2,3);//team 2 abillity now is : 110
+    worldCup.buy_team(5,6);//team 5 abillity now is : 50
+    //team 7 abillity now is : 10
+    output_t<int> result31 = worldCup.get_ith_pointless_ability(0);// supposed to be team 7
+    output_t<int> result32 = worldCup.get_ith_pointless_ability(1);// supposed to be team 5
+    output_t<int> result33 = worldCup.get_ith_pointless_ability(2);// supposed to be team 2
+    output_t<int> result34 = worldCup.get_ith_pointless_ability(3);// supposed to be team 4
+
+    if (result31.ans()!=7 || result32.ans()!=5  || result33.ans()!=2 || result34.ans()!=4)
+    {
+        return false;
+    }
+
+    return true;
+}
 //bool remove_team_test1(){
 //    world_cup_t worldCup;
 //    worldCup.add_team(0);
@@ -786,6 +1035,13 @@ int main() {
         return 1;
     if (!run_test(getCardsTests1, "getCardsTests1"))
         return 1;
+    if (!run_test(buy_team_TEST1, "buy_team_TEST1"))
+        return 1;
+    if (!run_test(buy_team_TEST2, "buy_team_TEST2"))
+        return 1;
+    if (!run_test(get_ith_pointless_ability1_TEST1, "get_ith_pointless_ability1_TEST1"))
+        return 1;
+    if (!run_test(get_ith_pointless_ability1_TEST2, "get_ith_pointless_ability1_TEST2"))
+        return 1;
     return 0;
 }
-

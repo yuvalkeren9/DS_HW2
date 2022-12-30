@@ -72,10 +72,10 @@ Team * playerUnionFind::findTeamRootNode(Player* player) {
 void playerUnionFind::playerUnion(Team* team1, Team* team2) {
     Node* team1Root = team1->getTeamRepresentative();
     Node* team2Root = team2->getTeamRepresentative();
-    if(team1Root== nullptr && team2Root != nullptr){//empty team buys nun empty team
-
-        team2Root->team=team1;
-    }
+//    if(team1Root== nullptr && team2Root != nullptr){//empty team buys nun empty team
+//
+//        team2Root->team=team1;
+//    }
     if(team1Root->sizeOfTree >= team2Root->sizeOfTree){   //team1 is larger
         team1Root->sizeOfTree += team2Root->sizeOfTree;
         team2Root->parent = team1Root;
@@ -90,8 +90,8 @@ void playerUnionFind::playerUnion(Team* team1, Team* team2) {
     else{
         team2Root->sizeOfTree += team1Root->sizeOfTree;
         team1Root->parent = team2Root;
-        team1Root->team = team2Root->team;
-
+       // team1Root->team = team2Root->team;
+        team2Root->team = team1Root->team;
         permutation_t oldSmallerRank = team2Root->rank;
         team2Root->rank = team1Root->rank * (team1Root->smallestNodeSpirit * team2Root->rank);
         team1Root->rank = team1Root->rank * team2Root->rank.inv();
@@ -155,9 +155,16 @@ Player* playerUnionFind::findPlayer(int playerId) const {
 }
 
 void playerUnionFind::print() {
-    playerArray.printArray();
-}
+    for (int i = 0; i < this->playerArray.arrayLength; ++i) {
+        //std::cout << "Hello! At index " << i << " we have the player: ";
+        if (this->playerArray[i].isEmpty) {
+            std::cout << "Empty!" << std::endl;
+            continue;
+        }
+        std::cout << "player " << playerArray[i].node->getPlayerId() << "in team "<< findTeamRootNode(playerArray[i].node->player)->getTeamId()<<endl;
 
+    }
+}
 
 
 

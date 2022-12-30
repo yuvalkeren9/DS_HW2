@@ -55,16 +55,17 @@ public:
 
 
     //functions for tests
-    void printArray(){
-        for (int i = 0; i < arrayLength; ++i) {
-            //std::cout << "Hello! At index " << i << " we have the player: ";
-            if (array[i].isEmpty) {
-                std::cout << "Empty!" << std::endl;
-                continue;
-            }
-            std::cout <<"player "<< array[i].node->getPlayerId() << "in team " << array[i].node->getTeam()->getTeamId()<< std::endl;
-        }
-    }
+//    void printArray(){
+//        for (int i = 0; i < arrayLength; ++i) {
+//            //std::cout << "Hello! At index " << i << " we have the player: ";
+//            if (array[i].isEmpty) {
+//                std::cout << "Empty!" << std::endl;
+//                continue;
+//            }
+//
+//            std::cout <<"player "<< array[i].node->getPlayerId() << "in team " << array[i].node->getTeam()->getTeamId()<< std::endl;
+//        }
+//    }
 
 private:
     static const int initialSize = 7;  //2^3 - 1 = 7, third mersenne number

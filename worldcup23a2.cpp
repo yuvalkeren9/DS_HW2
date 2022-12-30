@@ -1,11 +1,13 @@
 #include "worldcup23a2.h"
+#include <cassert>
+
 
 AVL_Tree<Team> teamsRankTree;
 playerUnionFind unionFind;
 Linked_List<Team> deletedTeamsList;
 
 
-world_cup_t::world_cup_t() :teamsRankTree(), unionFind(), deletedTeamsList(), numOfTeams(0)
+world_cup_t::world_cup_t() :teamsRankTree(),teamsByAbilityRankTree(), unionFind(), deletedTeamsList(), numOfTeams(0)
 {
 }
 
@@ -222,7 +224,9 @@ output_t<int> world_cup_t::get_ith_pointless_ability(int i)
         return StatusType::FAILURE;
     }
     i++;//shifting the index to right value
-    int IdToReturn=  this->teamsByAbilityRankTree.select(i)->getId();
+    teamByAbility* team =teamsByAbilityRankTree.select(i);
+    assert(team!= nullptr);
+    int IdToReturn=  team->getId();
     return  IdToReturn;
 }
 
@@ -285,7 +289,6 @@ StatusType world_cup_t::buy_team(int teamId1, int teamId2)
     }
     remove_team(teamId2);
     teamsByAbilityRankTree.Delete(team2->getTeamByAbility());
-    numOfTeams--;
     return StatusType::SUCCESS;
 }
 
