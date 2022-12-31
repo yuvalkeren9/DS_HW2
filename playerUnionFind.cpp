@@ -86,6 +86,7 @@ void playerUnionFind::playerUnion(Team* team1, Team* team2) {
         team1Root->smallestNodeSpirit =  team1Root->smallestNodeSpirit * (oldSmallerRank * team2Root->smallestNodeSpirit);
 
         //updating gamesRank
+        team2Root->gamesPlayedRank = team2Root->gamesPlayedRank + team2->getNumOfGamesPlayed() - team1->getNumOfGamesPlayed() - team1Root->gamesPlayedRank;
     }
     else{
         team2Root->sizeOfTree += team1Root->sizeOfTree;
@@ -98,9 +99,12 @@ void playerUnionFind::playerUnion(Team* team1, Team* team2) {
         team2Root->smallestNodeSpirit = team2Root->rank * (oldSmallerRank * team1Root->smallestNodeSpirit);
 
         //newlines by Yuval - debugging Ido session
+        team2Root->gamesPlayedRank = team2Root->gamesPlayedRank + team2->getNumOfGamesPlayed() - team1->getNumOfGamesPlayed();
+        team1Root->gamesPlayedRank =  team1Root->gamesPlayedRank - team2Root->gamesPlayedRank;
+
         team1->setTeamRepresentative(team2Root);
+
     }
-    team2Root->gamesPlayedRank = team2->getNumOfGamesPlayed() - team1->getNumOfGamesPlayed();
 
 }
 

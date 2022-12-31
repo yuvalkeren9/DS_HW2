@@ -31,6 +31,7 @@ private:
     playerUnionFind unionFind;
     Linked_List<Team> deletedTeamsList;
     long long int numOfTeams;
+    int counterTodelete; //TODO:REMOVE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 
     void updateTeamByAbilityTree(int teamID , int toInc) ;
