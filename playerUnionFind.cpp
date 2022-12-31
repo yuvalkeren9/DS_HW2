@@ -93,12 +93,15 @@ void playerUnionFind::playerUnion(Team* team1, Team* team2) {
         team1Root->parent = team2Root;
        // team1Root->team = team2Root->team;
         team2Root->team = team1Root->team;
+
+        //updating permutations
         permutation_t oldSmallerRank = team2Root->rank;
         team2Root->rank = team1Root->rank * (team1Root->smallestNodeSpirit * team2Root->rank);
-        team1Root->rank = team1Root->rank * team2Root->rank.inv();
-        team2Root->smallestNodeSpirit = team2Root->rank * (oldSmallerRank * team1Root->smallestNodeSpirit);
+        team1Root->rank = team2Root->rank.inv() * team1Root->rank;   //changed here
+        team2Root->smallestNodeSpirit = team2Root->rank * (oldSmallerRank * team1Root->smallestNodeSpirit); //TODO:check this out
 
-        //newlines by Yuval - debugging Ido session
+
+        //updating gamesPlayedRank
         team2Root->gamesPlayedRank = team2Root->gamesPlayedRank + team2->getNumOfGamesPlayed() - team1->getNumOfGamesPlayed();
         team1Root->gamesPlayedRank =  team1Root->gamesPlayedRank - team2Root->gamesPlayedRank;
 
