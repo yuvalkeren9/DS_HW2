@@ -19,6 +19,10 @@ public:
     bool operator==(const teamByAbility& other) const;
     bool operator>(const teamByAbility& other) const;
     bool operator<(const teamByAbility& other) const;
+
+    //lines added by yuval
+    void updateId(int id);
+
 };
 
 #endif //DS2_TEAMBYABILITY_H

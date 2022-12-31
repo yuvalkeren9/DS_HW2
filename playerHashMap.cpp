@@ -123,6 +123,9 @@ playerStruct &playerHashMap::operator[](int index) const {
 void playerHashMap::emptyArray() {
     for (int i=0; i < arrayLength; ++i){
         Node* node = array[i].node;
+        if(node != nullptr){
+            delete node->player;
+        }
         delete node;
     }
 }

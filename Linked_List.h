@@ -5,6 +5,7 @@
 #ifndef DS2_LINKED_LIST_H
 #define DS2_LINKED_LIST_H
 
+#include <cassert>
 
 template <class T>
 class Linked_List {
@@ -33,6 +34,7 @@ void Linked_List<T>::insert(T *data) {
     else{
         Linked_List_Node* oldLast = last;
         Linked_List_Node* newNode = new Linked_List_Node(data);
+        assert(oldLast->next == nullptr);
         oldLast->next = newNode;
         last = newNode;
         return;

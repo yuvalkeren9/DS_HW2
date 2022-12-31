@@ -8,8 +8,8 @@ Node *Team::getTeamRepresentative() const {
     return teamRepresentative;
 }
 
-void Team::setTeamRepresentative(Node* team) {
-    teamRepresentative = team;
+void Team::setTeamRepresentative(Node* player) {
+    teamRepresentative = player;
 
 }
 
@@ -112,7 +112,10 @@ void Team::copyTeamStats(Team* other) {
 
     teamSpirit=other->teamSpirit;
 //    teamAbility=other->teamAbility;
-    teamByAbilityPtr=other->teamByAbilityPtr;
+
+
+//    teamByAbilityPtr=other->teamByAbilityPtr;
+
     teamRepresentative=other->teamRepresentative;
     numOfGamesPlayed=other->numOfGamesPlayed;
     numbOfPlayersInTeam=other->numbOfPlayersInTeam;

@@ -208,7 +208,7 @@ bool addTeamTest1(){
         return true;
     }
     return false;
-};
+}
 
 bool removeTeamTest1(){
 

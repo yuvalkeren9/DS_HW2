@@ -13,6 +13,7 @@ world_cup_t::world_cup_t() :teamsRankTree(),teamsByAbilityRankTree(), unionFind(
 
 world_cup_t::~world_cup_t()
 {
+    teamsByAbilityRankTree.emptyTree();
     teamsRankTree.emptyTree();
 }
 
@@ -49,8 +50,9 @@ StatusType world_cup_t::remove_team(int teamId)
         return  StatusType::FAILURE;
     }
 
-    teamsRankTree.Delete(team);
     teamsByAbilityRankTree.Delete(team->getTeamByAbility());
+    delete (team->getTeamByAbility());
+    teamsRankTree.Delete(team);
     numOfTeams--;
     team->setIsActive(false);
 
@@ -79,9 +81,6 @@ StatusType world_cup_t::add_player(int playerId, int teamId,
     Team* team = searchTeamTree(teamId);
     if (team == nullptr){
         return StatusType::FAILURE;
-    }
-    if(playerId == 24){
-        int i =1;
     }
     Player* temp = unionFind.findPlayer(playerId);
     if (temp != nullptr){
@@ -268,7 +267,7 @@ StatusType world_cup_t::buy_team(int teamId1, int teamId2)
     {
         team1->copyTeamStats(team2);  //Team1 get team 2 stats without id and without team ability
         Node* team2Rep = team2->getTeamRepresentative();
-        team2Rep->team=team1;////now the representive of team2 points to team1 (why this accesses to private field is possible???)
+        team2Rep->team=team1;////now the representive of team2 points to team1
         updateTeamByAbilityTree(teamId1,team2->getTeamAbility());
         remove_team(teamId2);
         return StatusType::SUCCESS;
@@ -288,7 +287,7 @@ StatusType world_cup_t::buy_team(int teamId1, int teamId2)
         team1->setIsQualified(true);
     }
     remove_team(teamId2);
-    teamsByAbilityRankTree.Delete(team2->getTeamByAbility());
+//    teamsByAbilityRankTree.Delete(team2->getTeamByAbility());
     return StatusType::SUCCESS;
 }
 

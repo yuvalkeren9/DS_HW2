@@ -31,7 +31,7 @@ public:
     isQualified(false), points(0), teamAbility(0), teamSpirit() {teamSpirit = permutation_t::neutral();};
 
     Node* getTeamRepresentative() const;
-    void setTeamRepresentative(Node* team);
+    void setTeamRepresentative(Node* player);
     long long int getNumOfPlayersInTeam() const;
     int getNumOfGamesPlayed() const;
     void incNumOfGamesPlayed(int toSet);

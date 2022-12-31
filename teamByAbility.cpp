@@ -50,3 +50,8 @@ bool teamByAbility::operator<(const teamByAbility &other) const {
 int teamByAbility::getId() {
     return teamId;
 }
+
+void teamByAbility::updateId(int id) {
+    teamId = id;
+
+}
