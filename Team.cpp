@@ -111,11 +111,10 @@ void Team::setTeamByAbilityPtr(teamByAbility *toSet) {
 void Team::copyTeamStats(Team* other) {
 
     teamSpirit=other->teamSpirit;
-//    teamAbility=other->teamAbility;
+    teamAbility=other->teamAbility;
 
 
 //    teamByAbilityPtr=other->teamByAbilityPtr;
-
     teamRepresentative=other->teamRepresentative;
     numOfGamesPlayed=other->numOfGamesPlayed;
     numbOfPlayersInTeam=other->numbOfPlayersInTeam;

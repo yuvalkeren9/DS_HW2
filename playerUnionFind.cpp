@@ -96,6 +96,9 @@ void playerUnionFind::playerUnion(Team* team1, Team* team2) {
         team2Root->rank = team1Root->rank * (team1Root->smallestNodeSpirit * team2Root->rank);
         team1Root->rank = team1Root->rank * team2Root->rank.inv();
         team2Root->smallestNodeSpirit = team2Root->rank * (oldSmallerRank * team1Root->smallestNodeSpirit);
+
+        //newlines by Yuval - debugging Ido session
+        team1->setTeamRepresentative(team2Root);
     }
     team2Root->gamesPlayedRank = team2->getNumOfGamesPlayed() - team1->getNumOfGamesPlayed();
 

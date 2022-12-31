@@ -25,6 +25,8 @@ struct Node{            //circle
     Player* getPlayer() const;
     int getPlayerId() const;
     Team* getTeam() const;
+    void updateNodeTeamPointer(Team* teamPtr) { team = teamPtr;};
+
 };
 
 

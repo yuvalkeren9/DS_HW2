@@ -236,18 +236,26 @@ output_t<permutation_t> world_cup_t::get_partial_spirit(int playerId)
         return StatusType::INVALID_INPUT;
     }
 
-
     Player* player = unionFind.findPlayer(playerId);
     if (player == nullptr){
         return StatusType::FAILURE;
     }
 
+    //adding lines
+    Team* team = unionFind.findTeamRootNode(player);
+    if (team->getIsActive() == false){
+        return StatusType::FAILURE;
+    }
+    //stopped adding lines
 	return unionFind.getPlayerSpiral(player);
 
 }
 
 StatusType world_cup_t::buy_team(int teamId1, int teamId2)
 {
+    if(teamId1 == 100 && teamId2 == 87){
+        int meow = 5;    //TODO: REMOVE
+    }
 	//input check
     if (teamId1 <= 0 || teamId2 <=0 || teamId1 == teamId2){
         return StatusType::INVALID_INPUT;
@@ -266,6 +274,8 @@ StatusType world_cup_t::buy_team(int teamId1, int teamId2)
     if(team1->getNumOfPlayersInTeam()== 0 )// empty team buys not empty team
     {
         team1->copyTeamStats(team2);  //Team1 get team 2 stats without id and without team ability
+        Node* team1Rep = team1->getTeamRepresentative();
+        team1Rep->team = team1;
         Node* team2Rep = team2->getTeamRepresentative();
         team2Rep->team=team1;////now the representive of team2 points to team1
         updateTeamByAbilityTree(teamId1,team2->getTeamAbility());
