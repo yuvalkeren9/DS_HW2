@@ -12,6 +12,7 @@ Node* playerUnionFind::insertPlayer(Player *player) {
     if(team->getNumOfPlayersInTeam() == 0){
         team->setTeamRepresentative(node);
         node->wasRepresenative = true;
+        node->smallestNodeSpirit = player->getSpirit();
     }
     else{
 
@@ -19,10 +20,8 @@ Node* playerUnionFind::insertPlayer(Player *player) {
         Node* teamRepresenative = team->getTeamRepresentative();
         node->parent = teamRepresenative;
         teamRepresenative->sizeOfTree += 1;
-        permutation_t smallestOfTheRepresenative = teamRepresenative->smallestNodeSpirit;
-        permutation_t rankOfBoughtBeforeUpdate = node->rank;
-        node->rank = smallestOfTheRepresenative * node->rank;
-        teamRepresenative->smallestNodeSpirit = smallestOfTheRepresenative * rankOfBoughtBeforeUpdate;
+        node->rank= teamRepresenative->rank.inv() * teamRepresenative->smallestNodeSpirit * player->getSpirit(); //setting the nodes rank
+        teamRepresenative->smallestNodeSpirit = teamRepresenative->smallestNodeSpirit * player->getSpirit(); //updating the smallest spiral in the team
 
         //calculating gamesPlayedRank
         node->gamesPlayedRank = 0 - team->getNumOfGamesPlayed();
@@ -32,7 +31,7 @@ Node* playerUnionFind::insertPlayer(Player *player) {
 }
 
 
-Team * playerUnionFind::findTeamRootNode(Player* player) {
+Team * playerUnionFind::findTeamRootNode(Player* player) {  //TODO: something related to spiral
     int index = playerArray.find(player);
     assert( index != -1);
     Node* node = playerArray[index].node;
@@ -40,11 +39,12 @@ Team * playerUnionFind::findTeamRootNode(Player* player) {
     permutation_t allPermutation = permutation_t::neutral();
     long long int allGamesPlayed = 0;
     while (node->parent != nullptr){
-        allPermutation = allPermutation*node->rank;
+        allPermutation = node->rank * allPermutation;
         allGamesPlayed += node->gamesPlayedRank;
         node = node->parent;
     }
     Node* root = node;
+    allPermutation = root->rank * allPermutation;
     node = origNode;
     if (origNode == root){
         return root->team;
@@ -55,8 +55,10 @@ Team * playerUnionFind::findTeamRootNode(Player* player) {
 
         //calculating permutation
         permutation_t oldRankInverse = node->rank.inv();
-        node->rank = allPermutation;
-        allPermutation = oldRankInverse * allPermutation;
+//        node->rank = allPermutation;
+//        allPermutation = oldRankInverse * allPermutation;
+        node->rank = root->rank.inv()  * allPermutation;
+        allPermutation = allPermutation * oldRankInverse;
 
         //calculating gamesPlayed
         long long int oldGamesPlayedRank = node->gamesPlayedRank;
@@ -81,9 +83,11 @@ void playerUnionFind::playerUnion(Team* team1, Team* team2) {
         team2Root->parent = team1Root;
 
         //updating permutations
-        permutation_t oldSmallerRank = team2Root->rank;
-        team2Root->rank =  team1Root->smallestNodeSpirit * team2Root->rank;
-        team1Root->smallestNodeSpirit =  team1Root->smallestNodeSpirit * (oldSmallerRank * team2Root->smallestNodeSpirit);
+//        permutation_t oldSmallerRank = team2Root->rank;
+//        team2Root->rank =  team1Root->smallestNodeSpirit * team2Root->rank;
+//        team1Root->smallestNodeSpirit =  team1Root->smallestNodeSpirit * (oldSmallerRank * team2Root->smallestNodeSpirit); //old
+        team2Root->rank = team1Root->rank.inv() * team1Root->smallestNodeSpirit * team2Root->rank;  //updating the nodes rank
+        team1Root->smallestNodeSpirit = team1Root->smallestNodeSpirit * team2Root->smallestNodeSpirit;
 
         //updating gamesRank
         team2Root->gamesPlayedRank = team2Root->gamesPlayedRank + team2->getNumOfGamesPlayed() - team1->getNumOfGamesPlayed() - team1Root->gamesPlayedRank;
@@ -95,10 +99,17 @@ void playerUnionFind::playerUnion(Team* team1, Team* team2) {
         team2Root->team = team1Root->team;
 
         //updating permutations
-        permutation_t oldSmallerRank = team2Root->rank;
-        team2Root->rank = team1Root->rank * (team1Root->smallestNodeSpirit * team2Root->rank);
-        team1Root->rank = team2Root->rank.inv() * team1Root->rank;   //changed here
-        team2Root->smallestNodeSpirit = team2Root->rank * (oldSmallerRank * team1Root->smallestNodeSpirit); //TODO:check this out
+//        permutation_t oldSmallerRank = team2Root->rank;
+//        team2Root->rank = team1Root->rank * (team1Root->smallestNodeSpirit * team2Root->rank);
+//        team1Root->rank = team2Root->rank.inv() * team1Root->rank;   //changed here
+//        team2Root->smallestNodeSpirit = team2Root->rank * (oldSmallerRank * team1Root->smallestNodeSpirit); //TODO:check this out
+//        team2Root->smallestNodeSpirit = team1Root->smallestNodeSpirit * (oldSmallerRank * team2Root->smallestNodeSpirit); //TODO:check this out
+//        team2Root->smallestNodeSpirit =   team2Root->smallestNodeSpirit; //TODO:check this out
+        team2Root->rank = team1Root->smallestNodeSpirit  * team2Root->rank;
+        team1Root->rank = team2Root->rank.inv() * team1Root->rank;
+
+        team2Root->smallestNodeSpirit = team1Root->smallestNodeSpirit * team2Root->smallestNodeSpirit;
+        team1Root->smallestNodeSpirit = team1Root->smallestNodeSpirit * team2Root->smallestNodeSpirit;
 
 
         //updating gamesPlayedRank
