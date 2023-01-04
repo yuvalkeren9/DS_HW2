@@ -2,12 +2,12 @@
 #include <cassert>
 
 
-AVL_Tree<Team> teamsRankTree;
-playerUnionFind unionFind;
-Linked_List<Team> deletedTeamsList;
+//AVL_Tree<Team> teamsRankTree;
+//playerUnionFind unionFind;
+//Linked_List<Team> deletedTeamsList;
 
 
-world_cup_t::world_cup_t() :teamsRankTree(),teamsByAbilityRankTree(), unionFind(), deletedTeamsList(), numOfTeams(0), counterTodelete(0) //TODO remove COUNTER LINE THING
+world_cup_t::world_cup_t() :teamsRankTree(),teamsByAbilityRankTree(), unionFind(), deletedTeamsList(), numOfTeams(0)
 {
 }
 
@@ -161,13 +161,6 @@ output_t<int> world_cup_t::play_match(int teamId1, int teamId2)
 output_t<int> world_cup_t::num_played_games_for_player(int playerId)
 {
     //input check
-
-    if (playerId == 65){
-        ++counterTodelete;
-        if (counterTodelete == 2){
-            int meow = 5; ///TODO remove
-        }
-    }
     if (playerId <=0){
         return StatusType::INVALID_INPUT;
     }
@@ -320,10 +313,6 @@ Team *world_cup_t::searchTeamTree(int teamId) const {
     this->teamsByAbilityRankTree.Delete(team1);
     team1->IncTeamAbility(toInc);
     teamsByAbilityRankTree.insert(team1);
-}
-
-void world_cup_t::printAllPlayers() {
-    unionFind.print();
 }
 
 

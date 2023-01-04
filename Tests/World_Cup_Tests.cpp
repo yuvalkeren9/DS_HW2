@@ -718,7 +718,7 @@ bool buy_team_TEST2() {
     worldCup.add_player(2, 2, permut2, 20, 2, 1, true);
     output_t<int> result3 =  worldCup.buy_team(2,1);// expected success
 
-     worldCup.printAllPlayers();
+//     worldCup.printAllPlayers();
 
     if (result1.status() !=  StatusType::SUCCESS ||result2.status() !=  StatusType::SUCCESS || result3.status() !=  StatusType::SUCCESS)
     {

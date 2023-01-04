@@ -24,7 +24,7 @@ Node* playerUnionFind::insertPlayer(Player *player) {
         teamRepresenative->smallestNodeSpirit = teamRepresenative->smallestNodeSpirit * player->getSpirit(); //updating the smallest spiral in the team
 
         //calculating gamesPlayedRank
-        node->gamesPlayedRank = 0 - team->getNumOfGamesPlayed();
+        node->gamesPlayedRank = 0 - team->getNumOfGamesPlayed() - teamRepresenative->gamesPlayedRank ;
     }
     playerArray.add(node);
     return node;
@@ -83,9 +83,6 @@ void playerUnionFind::playerUnion(Team* team1, Team* team2) {
         team2Root->parent = team1Root;
 
         //updating permutations
-//        permutation_t oldSmallerRank = team2Root->rank;
-//        team2Root->rank =  team1Root->smallestNodeSpirit * team2Root->rank;
-//        team1Root->smallestNodeSpirit =  team1Root->smallestNodeSpirit * (oldSmallerRank * team2Root->smallestNodeSpirit); //old
         team2Root->rank = team1Root->rank.inv() * team1Root->smallestNodeSpirit * team2Root->rank;  //updating the nodes rank
         team1Root->smallestNodeSpirit = team1Root->smallestNodeSpirit * team2Root->smallestNodeSpirit;
 
@@ -99,12 +96,6 @@ void playerUnionFind::playerUnion(Team* team1, Team* team2) {
         team2Root->team = team1Root->team;
 
         //updating permutations
-//        permutation_t oldSmallerRank = team2Root->rank;
-//        team2Root->rank = team1Root->rank * (team1Root->smallestNodeSpirit * team2Root->rank);
-//        team1Root->rank = team2Root->rank.inv() * team1Root->rank;   //changed here
-//        team2Root->smallestNodeSpirit = team2Root->rank * (oldSmallerRank * team1Root->smallestNodeSpirit); //TODO:check this out
-//        team2Root->smallestNodeSpirit = team1Root->smallestNodeSpirit * (oldSmallerRank * team2Root->smallestNodeSpirit); //TODO:check this out
-//        team2Root->smallestNodeSpirit =   team2Root->smallestNodeSpirit; //TODO:check this out
         team2Root->rank = team1Root->smallestNodeSpirit  * team2Root->rank;
         team1Root->rank = team2Root->rank.inv() * team1Root->rank;
 
@@ -152,7 +143,7 @@ int playerUnionFind::getPlayerNumOfGamesPlayed(Player *player) {
     assert(node->wasRepresenative == true);
     gamesPlayed += node->gamesPlayedRank;
     gamesPlayed += node->team->getNumOfGamesPlayed();
-    Team* team = node->team;
+//    Team* team = node->team;
 
     //making shortcuts
     findTeamRootNode(player);
@@ -175,17 +166,6 @@ Player* playerUnionFind::findPlayer(int playerId) const {
     return node->player;
 }
 
-void playerUnionFind::print() {
-    for (int i = 0; i < this->playerArray.arrayLength; ++i) {
-        //std::cout << "Hello! At index " << i << " we have the player: ";
-        if (this->playerArray[i].isEmpty) {
-            std::cout << "Empty!" << std::endl;
-            continue;
-        }
-        std::cout << "player " << playerArray[i].node->getPlayerId() << "in team "<< findTeamRootNode(playerArray[i].node->player)->getTeamId()<<endl;
-
-    }
-}
 
 
 

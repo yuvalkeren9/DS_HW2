@@ -17,11 +17,11 @@ add_executable(
         Team.h
         playerUnionFind.cpp
         playerUnionFind.h
-        #Tests/World_Cup_Tests.cpp
+        Tests/World_Cup_Tests.cpp
         #Tests/UnionFindTests.cpp
         #Tests/AVLtreeTests.cpp
         Linked_List.h
         teamByAbility.h
         teamByAbility.cpp
-        main23a2.cpp
+        #main23a2.cpp
 )

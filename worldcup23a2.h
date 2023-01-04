@@ -31,12 +31,9 @@ private:
     playerUnionFind unionFind;
     Linked_List<Team> deletedTeamsList;
     long long int numOfTeams;
-    int counterTodelete; //TODO:REMOVE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
 
     void updateTeamByAbilityTree(int teamID , int toInc) ;
     Team* searchTeamTree(int teamId) const;
-    teamByAbility* searchTeamByAbilityTree(int teamId) const;
 
 public:
 	// <DO-NOT-MODIFY>
@@ -69,7 +66,6 @@ public:
 	StatusType buy_team(int teamId1, int teamId2);
 	
 	// } </DO-NOT-MODIFY>
-    void printAllPlayers();////TODO: remove!!!!!!!!!!!!!!!!
 };
 
 #endif // WORLDCUP23A1_H_
